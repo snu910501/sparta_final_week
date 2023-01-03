@@ -5,10 +5,11 @@ class ReviewController {
 
   createReview = async (req, res) => {
     try {
-      const { text, stars, residence_type, transaction_type, deposit, monthly_payment, acreage, bug, safe, communication, floor_noise, walls_noise, town_noise, mold, parking } = req.body;
+
+      const { address, text, stars, residence_type, transaction_type, deposit, monthly_payment, acreage, bug, safe, communication, floor_noise, walls_noise, town_noise, mold, parking } = req.body;
       const images = req.files;
 
-      let review = await this.reviewService.createReview(text, stars, residence_type, transaction_type, deposit, monthly_payment, acreage, bug, safe, communication, floor_noise, walls_noise, town_noise, mold, parking)
+      let review = await this.reviewService.createReview(address, text, stars, residence_type, transaction_type, deposit, monthly_payment, acreage, bug, safe, communication, floor_noise, walls_noise, town_noise, mold, parking)
       console.log(review)
     } catch (err) {
       console.log('CreateController error');
