@@ -5,7 +5,7 @@ module.exports = class Estate extends Sequelize.Model {
     return super.init(
       {
         estateId: {
-          type: Sequelize.STRING,
+          type: Sequelize.INTEGER,
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,

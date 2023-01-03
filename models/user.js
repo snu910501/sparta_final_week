@@ -5,38 +5,31 @@ module.exports = class User extends Sequelize.Model {
     return super.init(
       {
         userId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.INTEGER,
         },
         email: {
-          // unique: true,
-          type: Sequelize.STRING(45),
-          allowNull: true,
+          type: Sequelize.STRING,
+          allowNull: false,
         },
         nickname: {
-          unique: true,
-          allowNull: true,
-          type: Sequelize.STRING(45),
+          type: Sequelize.STRING,
+          allowNull: false,
         },
-        password: {
-          type: Sequelize.STRING(60),
-          allowNull: true,
-          defaultValue: null,
-        },
-        provider: {
-          type: Sequelize.STRING(10),
-          defaultValue: "local",
-        },
+        // profileImg: {
+        //   type: Sequelize.STRING,
+        //   allowNull: false,
+        // },
         snsId: {
           type: Sequelize.INTEGER,
-          allowNull: true,
-        },
+          allowNull: false,
+        }
       },
       {
         sequelize,
-        timestamps: false,
+        timestamps: true,
         modelName: "User",
         tableName: "users",
         paranoid: false,
