@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const app = express();
+app.set("port", process.env.NODE_ENV || "3001");
 
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
