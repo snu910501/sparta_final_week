@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const estateRouter = require('./estate.routes');
+const reviewRouter = require('./review.routes');
 
-router.use('/estate', estateRouter)
+router.use('/review', reviewRouter)
 
 
 module.exports = router;
