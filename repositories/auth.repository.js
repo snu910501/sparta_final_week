@@ -24,8 +24,8 @@ class AuthRepository {
     } catch (err) {
       console.log('AuthRepository findUser error', error);
       throw err;
-    }
-  }
+    };
+  };
 }
 
 module.exports = AuthRepository;
