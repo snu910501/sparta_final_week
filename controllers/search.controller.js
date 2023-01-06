@@ -18,6 +18,22 @@ class SearchController {
       }
     }
   }
+
+  assignPointWord = async (req, res) => {
+    try {
+      const text = req.body.text;
+      await this.searchService.assignPointWord(text);
+      return res.status(200).json({ message: '성공' })
+    } catch (err) {
+      console.log('SearchController assignPointWord Error', err);
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage })
+      } else {
+        return res.status(500).json({ errorMessage: 'error' })
+      }
+
+    }
+  }
 }
 
 module.exports = SearchController;
