@@ -21,8 +21,7 @@ class PostController {
 
   createPost = async (req, res, next) => {
     try {
-      // const { userId } = res.locals;
-      const userId = 1;
+      const userId = res.locals.userId;
       const { postLocation } = req.query;
       const { title, content } = req.body;
       if (req.file) {
@@ -38,7 +37,6 @@ class PostController {
         await this.postService.createPost(title, content, postLocation, userId);
       res.status(200).json({ msg: '작성 성공' });
     } catch (err) {
-      console.log(req.file);
       await this.postService.deleteS3Image(req.file.key);
       if (err.isJoi === true)
         return res.status(400).json({ errorMsg: '유효성 검사 에러' });
@@ -54,7 +52,6 @@ class PostController {
       const post = await this.postService.getDetailPost(postId);
       res.status(200).json({ post });
     } catch (err) {
-      console.log(err);
       if (err.isJoi === true)
         return res.status(400).json({ errorMsg: '유효성 검사 에러' });
       res
@@ -65,8 +62,7 @@ class PostController {
 
   getPreviousPost = async (req, res, next) => {
     try {
-      const userId = 1;
-      // const { userId } = res.locals.user;
+      const userId = res.locals.userId;
       const postId = req.params.postid;
       const post = await this.postService.getPreviousPost(postId, userId);
       res.status(200).json({ post });
@@ -81,8 +77,7 @@ class PostController {
 
   updatePost = async (req, res, next) => {
     try {
-      const userId = 1;
-      // const { userId } = res.locals.user;
+      const userId = res.locals.userId;
       const postId = req.params.postid;
       const { title, content } = req.body;
       if (req.file) {
@@ -108,8 +103,7 @@ class PostController {
 
   deletePost = async (req, res, next) => {
     try {
-      const userId = 1;
-      // const { userId } = res.locals.user;
+      const userId = res.locals.userId;
       const postId = req.params.postid;
       await this.postService.deletePost(postId, userId);
       res.status(200).json({ msg: '삭제 완료' });
