@@ -3,9 +3,9 @@ const CommentController = require('../controllers/comments.controller');
 const commentRouter = Router();
 const commentController = new CommentController();
 
-commentRouter.post('/posts/:postId/comments', commentController.createComment);
-commentRouter.get('/posts/:postId/comments', commentController.getComments);
-commentRouter.put('/comments/:commentId', commentController.updateComment);
-commentRouter.delete('/comments/:commentId', commentController.deleteComment);
+commentRouter.post('/posts/:postid/comments', commentController.createComment);
+commentRouter.get('/posts/:postid/comments', commentController.getComments);
+commentRouter.put('/comments/:commentid', commentController.updateComment);
+commentRouter.delete('/comments/:commentid', commentController.deleteComment);
 
 module.exports = commentRouter;

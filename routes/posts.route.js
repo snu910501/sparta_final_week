@@ -11,13 +11,13 @@ postRouter.post(
   multerPostImage.single('postImage'),
   postController.createPost,
 );
-postRouter.get('/:postId', postController.getDetailPost);
-postRouter.get('/update/:postId', postController.getPreviousPost);
+postRouter.get('/:postid', postController.getDetailPost);
+postRouter.get('/update/:postid', postController.getPreviousPost);
 postRouter.patch(
-  '/:postId',
+  '/:postid',
   multerPostImage.single('postImage'),
   postController.updatePost,
 );
-postRouter.delete('/:postId', postController.deletePost);
+postRouter.delete('/:postid', postController.deletePost);
 
 module.exports = postRouter;
