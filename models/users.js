@@ -43,13 +43,13 @@ module.exports = class Users extends Sequelize.Model {
   static associate(db) {
     db.Users.hasMany(db.Posts, {
       foreignKey: 'userId',
-      targetKey: 'userId',
+      sourceKey: 'userId',
       onDelete: 'cascade',
       onUpdate: 'cascade',
     });
     db.Users.hasMany(db.Comments, {
       foreignKey: 'userId',
-      sorceKey: 'userId',
+      sourceKey: 'userId',
       onDelete: 'cascade',
       onUpdate: 'cascade',
     });
