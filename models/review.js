@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 
 module.exports = class Review extends Sequelize.Model {
   static init(sequelize) {
@@ -49,20 +49,18 @@ module.exports = class Review extends Sequelize.Model {
         acreage: {
           type: Sequelize.INTEGER,
           allowNull: false,
-        }
+        },
       },
       {
         sequelize,
         timestamps: true,
-        modelName: "Review",
-        tableName: "reviews",
+        modelName: 'Review',
+        tableName: 'reviews',
         paranoid: false,
-        charset: "utf8",
-        collate: "utf8_general_ci",
-      }
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
+      },
     );
   }
-  static associate(db) {
-
-  }
+  static associate(db) {}
 };

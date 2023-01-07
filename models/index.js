@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const Users = require('./user');
+const Users = require('./users');
 const Posts = require('./posts');
 const Comments = require('./comments');
 
