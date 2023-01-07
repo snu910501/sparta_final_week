@@ -32,13 +32,13 @@ class socialLogin {
           const result = { userId, accessToken, nickname };
           res.status(201).json({
             result: result,
-            msg: '카카오 로그인에 성공하였습니다.',
+            msg: '카카오 로그인 성공',
           });
         },
       )(req, res, next);
     } catch (error) {
       console.error(error);
-      res.status(400).json({ msg: 'fail' });
+      res.status(400).json({ msg: '카카오 로그인 성공' });
     }
   };
 }

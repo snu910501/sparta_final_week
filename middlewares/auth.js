@@ -1,20 +1,21 @@
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = process.env;
-const { UnexpectedError } = require('./custom-exception');
+const { ACCESS_SECRET_KEY } = process.env;
+const { customError } = require('./customError');
 
 const isLoggedIn = (req, res, next) => {
   try {
     const { authorization } = req.headers;
-    if (!authorization) return next(new UnexpectedError('LOGIN REQUIRED', 401));
+    if (!authorization) return next(new customError('로그인 필요', 401));
 
     const [authType, authToken] = authorization.split(' ');
-    if (authType !== 'Bearer') throw new UnexpectedError('WRONG REQUEST', 400);
+    if (authType !== 'Bearer')
+      throw new customError('토큰 유효성검사 실패', 400);
 
     try {
-      res.locals = jwt.verify(authToken, SECRET_KEY);
+      res.locals = jwt.verify(authToken, ACCESS_SECRET_KEY).userId;
       next();
     } catch (err) {
-      next(new UnexpectedError('LOGIN REQUIRED', 401));
+      next(new customError('로그인 필요', 401));
     }
   } catch (err) {
     next(err);
@@ -24,16 +25,17 @@ const isLoggedIn = (req, res, next) => {
 const isNotLoggedIn = (req, res, next) => {
   try {
     const { authorization } = req.headers;
-    if (!authorization) return next();
+    if (!authorization) next();
 
     const [authType, authToken] = authorization.split(' ');
-    if (authType !== 'Bearer') throw new UnexpectedError('WRONG REQUEST', 400);
+    if (authType !== 'Bearer')
+      throw new customError('토큰 유효성검사 실패', 401);
 
     try {
-      jwt.verify(authToken, SECRET_KEY);
-      next(new UnexpectedError('ALREADY LOGGED IN', 400));
+      jwt.verify(authToken, ACCESS_SECRET_KEY);
+      next(new customError('이미 로그인 되어있음', 400));
     } catch (err) {
-      next(err);
+      next(new customError('토큰 유효성검사 실패', 401));
     }
   } catch (err) {
     next(err);
