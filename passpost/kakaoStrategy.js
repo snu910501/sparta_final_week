@@ -1,7 +1,7 @@
 const passport = require('passport');
 const KakaoStrategy = require('passport-kakao').Strategy;
 const Users = require('../models/users');
-const { KAKAO_ID } = process.env;
+const KAKAO_ID = process.env;
 module.exports = () => {
   passport.use(
     'kakao',
