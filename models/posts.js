@@ -53,7 +53,7 @@ module.exports = class Posts extends Sequelize.Model {
     });
     db.Posts.hasMany(db.Comments, {
       foreignKey: 'postId',
-      sorceKey: 'postId',
+      sourceKey: 'postId',
       onDelete: 'cascade',
       onUpdate: 'cascade',
     });
