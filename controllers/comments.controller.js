@@ -6,7 +6,7 @@ class CommentController {
   }
   createComment = async (req, res, next) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals;
       const postId = req.params.postid;
       const { content } = req.body;
       await this.commentService.createComment(userId, postId, content);
@@ -34,7 +34,7 @@ class CommentController {
   };
   updateComment = async (req, res, next) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals;
       const commentId = req.params.commentid;
       const { content } = req.body;
       await this.commentService.updateComment(userId, commentId, content);
@@ -49,7 +49,7 @@ class CommentController {
   };
   deleteComment = async (req, res, next) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals;
       const commentId = req.params.commentid;
       await this.commentService.deleteComment(userId, commentId);
       return res.status(200).json({ msg: '삭제 성공' });
