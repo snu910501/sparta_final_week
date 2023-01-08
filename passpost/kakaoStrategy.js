@@ -1,13 +1,13 @@
 const passport = require('passport');
 const KakaoStrategy = require('passport-kakao').Strategy;
 const Users = require('../models/users');
-const KAKAO_ID = process.env;
+
 module.exports = () => {
   passport.use(
     'kakao',
     new KakaoStrategy(
       {
-        clientID: KAKAO_ID,
+        clientID: process.env.KAKAO_ID,
         callbackURL: '/social/kakao/callback',
       },
 
@@ -34,7 +34,7 @@ module.exports = () => {
               email: profile._json.kakao_account.email,
               nickname: profile.displayName,
               snsId: profile.id,
-              profileImage: profile._json.properties.profile_image,
+              profileImg: profile._json.properties.profile_image,
             });
 
             done(null, newUser); // 회원가입하고 로그인 인증 완료
