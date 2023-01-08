@@ -21,7 +21,7 @@ class PostController {
 
   createPost = async (req, res, next) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals;
       const { postLocation } = req.query;
       const { title, content } = req.body;
       if (req.file) {
@@ -62,7 +62,7 @@ class PostController {
 
   getPreviousPost = async (req, res, next) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals;
       const postId = req.params.postid;
       const post = await this.postService.getPreviousPost(postId, userId);
       res.status(200).json({ post });
@@ -77,7 +77,7 @@ class PostController {
 
   updatePost = async (req, res, next) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals;
       const postId = req.params.postid;
       const { title, content } = req.body;
       if (req.file) {
@@ -103,7 +103,7 @@ class PostController {
 
   deletePost = async (req, res, next) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals;
       const postId = req.params.postid;
       await this.postService.deletePost(postId, userId);
       res.status(200).json({ msg: '삭제 완료' });
