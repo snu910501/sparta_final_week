@@ -2,8 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const app = express();
+
 app.set("port", process.env.NODE_ENV || "3000");
 
 const { sequelize } = require("./models");
@@ -25,6 +27,7 @@ sequelize
   });
 
 
+app.use(helmet())
 app.use(cors(corsOption));
 app.use(morgan("dev"));
 app.use(express.json());

@@ -10,23 +10,23 @@ module.exports = class Review extends Sequelize.Model {
           autoIncrement: true,
           primaryKey: true,
         },
-        userId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
+        // userId: {
+        //   type: Sequelize.INTEGER,
+        //   allowNull: false,
+        // },
         estateId: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        nickname: {
-          type: Sequelize.STRING,
-          allowNull: false,
-        },
+        // nickname: {
+        //   type: Sequelize.STRING,
+        //   allowNull: false,
+        // },
         text: {
           type: Sequelize.STRING,
           allowNull: false,
         },
-        stats: {
+        stars: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
