@@ -17,14 +17,11 @@ const sequelize = new Sequelize(
 );
 
 db.sequelize = sequelize;
-db.User = User;
 db.Estate = Estate;
 db.EstateInfo = EstateInfo;
 db.Review = Review;
 db.Word = Word;
 
-
-User.init(sequelize);
 Estate.init(sequelize);
 EstateInfo.init(sequelize);
 Review.init(sequelize);
