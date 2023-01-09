@@ -3,11 +3,12 @@ const Error = require("../modules/error");
 
 // 입력될 데이터들에 대한 유효성 검사를 실시합니다. 숫자냐 문자냐를 검사하고, 점수를 부여하는 구간에서는 1~5점만 부여하게 유효성 검사를 실시했습니다.
 
-module.exports = reviewValidate = async (text, stars, residence_type, transaction_type, deposit, monthly_payment, acreage, bug, safe, communication, floor_noise, walls_noise, town_noise, mold, parking) => {
+module.exports = reviewValidate = async (text, stars, residence_type, transaction_type, deposit, monthly_payment, acreage, bug, safe, communication, floor_noise, walls_noise, town_noise, mold, parking, images) => {
   let checkNum = /[0-9]/;
-  let checkString = /^[a-zA-Zㄱ-힣0-9-_.]$/
+  let checkString = /^[a-zA-Zㄱ-힣0-9-_.]{1,500}$/
+  // -_.!?
 
-  if (checkString.test(text)) {
+  if (!checkString.test(text)) {
     const error = new Error(405, "text 형식이 일치하지 않습니다.")
     throw error
   };
@@ -72,6 +73,10 @@ module.exports = reviewValidate = async (text, stars, residence_type, transactio
   }
   if (!checkNum.test(parking) || parking > 5 || parking < 1) {
     const error = new Error(405, "parking 형식이 일치하지 않습니다.")
+    throw error
+  }
+  if (images.length > 5 || images.length < 0) {
+    const error = new Error(405, "images 형식이 일치하지 않습니다.")
     throw error
   }
 

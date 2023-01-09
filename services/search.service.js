@@ -1,11 +1,14 @@
 const { Word } = require('../models');
 const SearchRepository = require('../repositories/search.repository');
+const searchValidate = require("../modules/searchValidate");
 
 class SearchService {
   searchRepository = new SearchRepository();
 
   search = async (text) => {
     try {
+      // 검색어 중 특수문자가 있으면 짤라버리는 유효성 검사
+      await searchValidate(text);
       const textList = await this.searchRepository.search(text);
       return textList;
     } catch (err) {

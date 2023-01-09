@@ -1,6 +1,6 @@
 const ReviewRepository = require('../repositories/review.repository');
-
 const reviewValidate = require('../modules/reviewValidate');
+const imagesValidate = require('../modules/imagesValidate');
 
 class ReviewService {
   reviewRepository = new ReviewRepository();
@@ -22,8 +22,10 @@ class ReviewService {
     town_noise,
     mold,
     parking,
+    images,
   ) => {
     try {
+      // 리뷰 요소에 대한 유효성 검사
       await reviewValidate(
         text,
         stars,
@@ -40,8 +42,10 @@ class ReviewService {
         town_noise,
         mold,
         parking,
+        images,
       );
 
+      await imagesValidate(images);
       // 건물에다가 후기를 다는 로직이기 때문에, 만약 어느 건물에 후기가 달린적이 없다면
       // 그 건물은 생성되어 있지 않을 것이고, 달린적이 있다면 건물은 생성되어 있을것
       let reviewExist = await this.reviewRepository.findEstate(address);
@@ -50,6 +54,7 @@ class ReviewService {
       if (reviewExist) {
         let review = await this.reviewRepository.createReview(
           reviewExist.estateId,
+          // nickname,
           text,
           stars,
           residence_type,

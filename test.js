@@ -1,7 +1,8 @@
-let start = 'AC00';
-let end = 'D7A3';
-let word = '간ㅎ';
+let file = 'routes.index.js.Png';
 
-console.log(parseInt(start, 16))
-console.log(String.fromCharCode(parseInt(start, 16)))
-console.log(word.charCodeAt(1))
+let fileDot = file.lastIndexOf('.');
+console.log(fileDot);
+
+let fileType = file.substring(fileDot + 1, file.length).toLowerCase();
+
+console.log(fileType);

@@ -19,7 +19,7 @@ class ReviewRepository {
 
   createEstate = async (address) => {
     try {
-      let estate = await Estate.create(address);
+      let estate = await Estate.create({ address });
       return estate;
     } catch (err) {
       console.log('ReviewRepository CreateEstate Error', err);
@@ -31,6 +31,7 @@ class ReviewRepository {
   // 현재 UserId 부분이 빠져있다.
   createReview = async (
     estateId,
+    // nickname,
     text,
     stars,
     residence_type,
@@ -48,26 +49,31 @@ class ReviewRepository {
     parking,
   ) => {
     let review = await Review.create(
-      estateId,
-      text,
-      stars,
-      residence_type,
-      transaction_type,
-      deposit,
-      monthly_payment,
-      acreage,
+      {
+        estateId,
+        // nickname,
+        text,
+        stars,
+        residence_type,
+        transaction_type,
+        deposit,
+        monthly_payment,
+        acreage,
+      }
     );
     let estateInfo = await EstateInfo.create(
-      review.reviewId,
-      estateId,
-      bug,
-      safe,
-      communication,
-      floor_noise,
-      walls_noise,
-      town_noise,
-      mold,
-      parking
+      {
+        reviewId: review.reviewId,
+        estateId,
+        bug,
+        safe,
+        communication,
+        floor_noise,
+        walls_noise,
+        town_noise,
+        mold,
+        parking
+      }
     )
     return { review, estateInfo }
   };
