@@ -19,7 +19,8 @@ module.exports = reviewValidate = async (address, residence_type, transaction_ty
     const error = new Error(405, "stars 형식이 일치하지 않습니다.")
     throw error
   };
-
+  console.log(residence_type);
+  console.log(typeof residence_type);
   if (residence_type != '원룸' && residence_type != '투룸') {
     const error = new Error(405, "residence_type 형식이 일치하지 않습니다.")
     throw error
