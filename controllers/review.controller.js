@@ -4,7 +4,9 @@ class ReviewController {
   reviewService = new ReviewService();
 
   createReview = async (req, res) => {
-    console.log('req.bod', req.body);
+    console.log('req.bod', req.body.address);
+    console.log('req.bod', req.body.residence_type);
+    console.log('req.bod', req.body.transaction_type);
     try {
       const {
         address,
