@@ -22,11 +22,15 @@ module.exports = class Review extends Sequelize.Model {
         //   type: Sequelize.STRING,
         //   allowNull: false,
         // },
-        text: {
+        good: {
           type: Sequelize.STRING,
           allowNull: false,
         },
-        stars: {
+        bad: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        star: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },

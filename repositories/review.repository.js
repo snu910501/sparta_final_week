@@ -17,9 +17,13 @@ class ReviewRepository {
     }
   };
 
-  createEstate = async (address) => {
+  createEstate = async (address, latLng) => {
     try {
-      let estate = await Estate.create({ address });
+      let estate = await Estate.create({
+        address: address,
+        lat: latLng.lat,
+        lng: latLng.lng
+      });
       return estate;
     } catch (err) {
       console.log('ReviewRepository CreateEstate Error', err);
@@ -32,28 +36,32 @@ class ReviewRepository {
   createReview = async (
     estateId,
     // nickname,
-    text,
-    stars,
+    good,
+    bad,
+    star,
     residence_type,
     transaction_type,
     deposit,
     monthly_payment,
     acreage,
-    bug,
-    safe,
     communication,
+    bug,
+    smell,
     floor_noise,
     walls_noise,
     town_noise,
     mold,
     parking,
+    safe,
+
   ) => {
     let review = await Review.create(
       {
         estateId,
         // nickname,
-        text,
-        stars,
+        good,
+        bad,
+        star,
         residence_type,
         transaction_type,
         deposit,
@@ -65,14 +73,15 @@ class ReviewRepository {
       {
         reviewId: review.reviewId,
         estateId,
-        bug,
-        safe,
         communication,
+        bug,
+        smell,
         floor_noise,
         walls_noise,
         town_noise,
         mold,
-        parking
+        parking,
+        safe,
       }
     )
     return { review, estateInfo }

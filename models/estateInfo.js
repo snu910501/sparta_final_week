@@ -19,15 +19,15 @@ module.exports = class EstateInfo extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
+        communication: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
         bug: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        safe: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-        communication: {
+        smell: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
@@ -50,7 +50,11 @@ module.exports = class EstateInfo extends Sequelize.Model {
         parking: {
           type: Sequelize.INTEGER,
           allowNull: false,
-        }
+        },
+        safe: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
       },
       {
         sequelize,

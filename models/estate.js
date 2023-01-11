@@ -13,7 +13,15 @@ module.exports = class Estate extends Sequelize.Model {
         address: {
           type: Sequelize.STRING,
           allowNull: false,
-        }
+        },
+        lat: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        lng: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
       },
       {
         sequelize,

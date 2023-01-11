@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const User = require('./user');
 const Estate = require('./estate');
 const EstateInfo = require('./estateInfo');
 const Review = require("./review");
