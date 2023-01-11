@@ -6,7 +6,8 @@ class MapService {
   getMap = async (neLatLng, swLatLng, zoomLevel) => {
     try {
       //if문과 switch를 비교 했을 경우 if else가 3개이상 넘어가면 switch가 유리하다고 함.
-      console.log(zoomLevel);
+      console.log(neLatLng);
+      console.log(swLatLng);
       let reviews;
       if (zoomLevel > 8) {
         const reviews = await this.mapRepository.getMapZoomFive();
