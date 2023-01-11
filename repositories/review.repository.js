@@ -1,7 +1,13 @@
 const Review = require('../models/review');
 const EstateInfo = require('../models/estateInfo');
 const Estate = require('../models/estate');
+const DistrictDo = require("../models/districtDo");
+const DistrictCity = require('../models/districtCity');
+const DistrictDong = require('../models/districtDong');
 
+
+// 경기도 전라도 의 도를 Do로 나타냄
+// 안산시 서울시 등을 city로 나타냄
 class ReviewRepository {
   findEstate = async (address) => {
     try {
@@ -17,10 +23,93 @@ class ReviewRepository {
     }
   };
 
-  createEstate = async (address, latLng) => {
+  createDo = async (doName) => {
+    try {
+      console.log('doname', doName);
+      const doExist = await DistrictDo.findOne({
+        where: {
+          doName: doName
+        }
+      })
+      console.log('zzz', doExist);
+      if (!doExist) {
+        await DistrictDo.create({
+          doName: doName,
+          review: 1,
+        })
+      } else {
+        await doExist.update({
+          review: doExist.review += 1,
+        })
+      }
+
+    } catch (err) {
+      console.log('reviewRepository createDo Error', err);
+      throw err;
+    }
+  }
+  createCity = async (cityName) => {
+    try {
+      const cityExist = await DistrictCity.findOne({
+        where: {
+          cityName: cityName
+        }
+      })
+
+      if (!cityExist) {
+        await DistrictCity.create({
+          cityName: cityName,
+          review: 1,
+        })
+      } else {
+        await cityExist.update({
+          review: cityExist.review += 1,
+        })
+      }
+    } catch (err) {
+      console.log('reviewRepository createCity Error', err);
+      throw err;
+    }
+  }
+  createDong = async (dongName) => {
+    try {
+      const dongExist = await DistrictDong.findOne({
+        where: {
+          dongName: dongName
+        }
+      })
+
+      if (!dongExist) {
+        await DistrictDong.create({
+          dongName: dongName,
+          review: 1,
+        })
+      } else {
+        await dongExist.update({
+          review: dongExist.review += 1,
+        })
+      }
+    } catch (err) {
+      console.log('reviewRepository createDong Error', err);
+      throw err;
+    }
+  }
+
+  assignPointDo = async (doName) => {
+
+  }
+  assignPointCity = async (cityName) => {
+
+  }
+  assignPointDong = async (dongName) => {
+
+  }
+
+  createEstate = async (address, address_jibun, latLng) => {
     try {
       let estate = await Estate.create({
         address: address,
+        address_jibun: address_jibun,
         lat: latLng.lat,
         lng: latLng.lng
       });

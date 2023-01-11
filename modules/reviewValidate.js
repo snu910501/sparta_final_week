@@ -3,7 +3,7 @@ const Error = require("../modules/error");
 
 // 입력될 데이터들에 대한 유효성 검사를 실시합니다. 숫자냐 문자냐를 검사하고, 점수를 부여하는 구간에서는 1~5점만 부여하게 유효성 검사를 실시했습니다.
 
-module.exports = reviewValidate = async (address, residence_type, transaction_type, deposit, monthly_payment, acreage, communication, bug, smell, floor_noise, walls_noise, town_noise, mold, parking, safe, good, bad, star, images) => {
+module.exports = reviewValidate = async (address, address_jibun, residence_type, transaction_type, deposit, monthly_payment, acreage, communication, bug, smell, floor_noise, walls_noise, town_noise, mold, parking, safe, good, bad, star, images) => {
   let checkNum = /[0-9]/;
   let checkString = /^[a-zA-Zㄱ-힣0-9-_. ]{1,500}$/
   // -_.!?
@@ -19,8 +19,6 @@ module.exports = reviewValidate = async (address, residence_type, transaction_ty
     const error = new Error(405, "stars 형식이 일치하지 않습니다.")
     throw error
   };
-  console.log(residence_type);
-  console.log(typeof residence_type);
   if (residence_type != '원룸' && residence_type != '투룸') {
     const error = new Error(405, "residence_type 형식이 일치하지 않습니다.")
     throw error

@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 module.exports = addressToGet = async (address) => {
-  console.log('ddd', address)
+
   const response = await axios.get('https://dapi.kakao.com/v2/local/search/address.json', {
     headers: {
       'Authorization': 'KakaoAK 5ef5bfb475821f7a1a4a6db2f85472c1'
