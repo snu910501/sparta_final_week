@@ -5,7 +5,7 @@ class MapController {
   getMap = async (req, res) => {
     try {
       const { neLatLng, swLatLng, zoomLevel } = req.body
-      console.log(neLatLng, swLatLng);
+      console.log('req.body', neLatLng, swLatLng, zoomLevel);
       let reviews = await this.mapService.getMap(neLatLng, swLatLng, zoomLevel);
       return res.status(200).json({ data: reviews })
     } catch (err) {
