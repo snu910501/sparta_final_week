@@ -47,7 +47,7 @@ class MapRepository {
       throw err;
     }
   };
-  getMapZoomOne = async () => {
+  getMapZoomOne = async (neLatLng, swLatLng) => {
     try {
       const reviews = await Estate.findAll({
         where: {
