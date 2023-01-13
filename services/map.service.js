@@ -9,16 +9,20 @@ class MapService {
 
       if (zoomLevel > 8) {
         const reviews = await this.mapRepository.getMapZoomFive();
+        console.log(reviews)
         return reviews
       } else if (zoomLevel > 6) {
         const reviews = await this.mapRepository.getMapZoomFour();
+        console.log(reviews)
         return reviews
       } else if (zoomLevel > 4) {
         const reviews = await this.mapRepository.getMapZoomThree();
+        console.log(reviews)
         return reviews
       }
       else if (zoomLevel > 2) {
         const reviews = await this.mapRepository.getMapZoomTwo(neLatLng, swLatLng);
+        console.log(reviews)
         if (zoomLevel == 4) {
           try {
             const width = (neLatLng.lng - swLatLng.lng).toFixed(4);
@@ -60,7 +64,6 @@ class MapService {
                 }
               }
             }
-            console.log(data)
             return data
           } catch (err) {
             console.log('MapService get Map zoom level 4 Error', err);
@@ -95,7 +98,17 @@ class MapService {
               }
 
             }
-            return arr
+            console.log(reviews)
+            // 값이 있는 배열들만 프론트에 전달하려고 함
+            let data = []
+            for (let i = 0; i < ROW; i++) {
+              for (let a = 0; a < COLUMN; a++) {
+                if (arr[i][a] != undefined) {
+                  data.push(arr[i][a])
+                }
+              }
+            }
+            return data;
 
           } catch (err) {
             console.log('MapService get Map zoom level 3 Error', err);
@@ -105,6 +118,7 @@ class MapService {
       }
       else {
         const reviews = await this.mapRepository.getMapZoomOne(neLatLng, swLatLng);
+        console.log(reviews)
         return reviews
       }
 
