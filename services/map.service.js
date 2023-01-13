@@ -60,6 +60,7 @@ class MapService {
                 }
               }
             }
+            console.log(data)
             return data
           } catch (err) {
             console.log('MapService get Map zoom level 4 Error', err);
@@ -94,7 +95,7 @@ class MapService {
               }
 
             }
-            console.log(arr)
+            return arr
 
           } catch (err) {
             console.log('MapService get Map zoom level 3 Error', err);
