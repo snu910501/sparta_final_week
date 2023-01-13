@@ -26,7 +26,11 @@ module.exports = class Posts extends Sequelize.Model {
           allowNull: false,
           type: Sequelize.STRING(10000),
         },
-        postLocation: {
+        postLocation1: {
+          allowNull: false,
+          type: Sequelize.STRING,
+        },
+        postLocation2: {
           allowNull: false,
           type: Sequelize.STRING,
         },

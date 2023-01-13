@@ -1,35 +1,80 @@
-const { Users } = require('../models');
+const { Users, Comments } = require('../models');
+const { Sequelize, Op } = require('sequelize');
 
 class PostRepository {
   constructor(postsModel) {
     this.postsModel = postsModel;
   }
 
-  //, 'profileImg' 인클루드에 넣어야함
-  getLocationPosts = async (postLocation) => {
+  getLocationPosts = async (postLocation1, postLocation2) => {
+    let whereLocation = {};
+    if (postLocation1) {
+      whereLocation = postLocation2
+        ? { [Op.and]: [{ postLocation1 }, { postLocation2 }] }
+        : { postLocation1 };
+    }
     const posts = await this.postsModel.findAll({
-      where: { postLocation },
-      order: [['postId', 'DESC']],
-      include: [{ model: Users, attributes: ['nickname'] }],
+      where: whereLocation,
+      order: [
+        ['commentsCount', 'DESC'],
+        ['createdAt', 'DESC'],
+      ],
+      attributes: [
+        'postId',
+        'postImage',
+        'title',
+        'content',
+        // 'postLocation1',
+        // 'postLocation2',
+        'createdAt',
+        [
+          Sequelize.fn('COUNT', Sequelize.col('Comments.commentId')),
+          'commentsCount',
+        ],
+        [Sequelize.col('User.nickname'), 'nickname'],
+      ],
+      include: [
+        { model: Users, attributes: [] },
+        { model: Comments, attributes: [] },
+      ],
+      group: 'postId',
     });
     return posts;
   };
 
-  createPost = async (title, content, postLocation, userId, postImage) => {
+  createPost = async (
+    title,
+    content,
+    postLocation1,
+    postLocation2,
+    userId,
+    postImage,
+  ) => {
     await this.postsModel.create({
       title,
       content,
-      postLocation,
+      postLocation1,
+      postLocation2,
       userId,
       postImage,
     });
   };
 
-  //, 'profileImg' 인클루드에 넣어야함
   getDetailPost = async (postId) => {
     const post = await this.postsModel.findOne({
       where: { postId },
-      include: [{ model: Users, attributes: ['nickname'] }],
+      attributes: [
+        'postId',
+        'postImage',
+        'title',
+        'content',
+        // 'postLocation1',
+        // 'postLocation2',
+        'createdAt',
+        [Sequelize.col('User.nickname'), 'nickname'],
+        [Sequelize.col('User.profileImg'), 'profileImg'],
+      ],
+      include: [{ model: Users, attributes: [] }],
     });
     return post;
   };
@@ -48,6 +93,15 @@ class PostRepository {
 
   deletePost = async (postId) => {
     await this.postsModel.destroy({ where: { postId } });
+  };
+
+  getMyPost = async (userId) => {
+    const myposts = await this.postsModel.findAll({
+      where: { userId },
+      order: [['createdAt', 'DESC']],
+      attributes: ['postId', 'title', 'createdAt'],
+    });
+    return myposts;
   };
 }
 

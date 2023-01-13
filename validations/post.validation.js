@@ -1,11 +1,15 @@
 const joi = require('joi');
 
-const postLocationValidation = joi.string().required();
+const postLocationValidation = joi.object().keys({
+  postLocation1: joi.string(),
+  postLocation2: joi.string(),
+});
 
 const createPostValidation = joi.object().keys({
   title: joi.string().required().min(1).max(50),
   content: joi.string().required().min(1).max(10000),
-  postLocation: joi.string().required(),
+  postLocation1: joi.string().required(),
+  postLocation2: joi.string().required(),
   userId: joi.number().required(),
   postImage: joi.string(),
 });
@@ -25,10 +29,13 @@ const updatePostValidation = joi.object().keys({
   postImage: joi.string(),
 });
 
+const userIdValidation = joi.number().required();
+
 module.exports = {
   createPostValidation,
   postLocationValidation,
   postIdValidation,
   PreviousPostValidation,
   updatePostValidation,
+  userIdValidation,
 };

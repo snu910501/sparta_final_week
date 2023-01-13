@@ -6,9 +6,11 @@ const {
   postIdValidation,
   PreviousPostValidation,
   updatePostValidation,
+  userIdValidation,
 } = require('../validations/post.validation');
 const { Posts } = require('../models');
 const s3 = require('../config/aws.post.s3');
+const { badRequest, forbidden } = require('@hapi/boom');
 
 class PostService {
   constructor() {
@@ -16,27 +18,42 @@ class PostService {
     this.postS3Repository = new PostS3Repository(s3);
   }
   //지역게시글 조회
-  getLocationPosts = async (postLocation) => {
-    await postLocationValidation.validateAsync(postLocation);
-    const posts = await this.postRepository.getLocationPosts(postLocation);
+  getLocationPosts = async (postLocation1, postLocation2) => {
+    await postLocationValidation.validateAsync({
+      postLocation1,
+      postLocation2,
+    });
+    const posts = await this.postRepository.getLocationPosts(
+      postLocation1,
+      postLocation2,
+    );
 
-    if (!posts) throw { msg: '지역 게시물 없음', code: 400 };
+    if (!posts) throw badRequest('지역 게시물 없음');
 
     return posts;
   };
   //게시글 생성
-  createPost = async (title, content, postLocation, userId, postImage) => {
+  createPost = async (
+    title,
+    content,
+    postLocation1,
+    postLocation2,
+    userId,
+    postImage,
+  ) => {
     await createPostValidation.validateAsync({
       title,
       content,
-      postLocation,
+      postLocation1,
+      postLocation2,
       userId,
       postImage,
     });
     await this.postRepository.createPost(
       title,
       content,
-      postLocation,
+      postLocation1,
+      postLocation2,
       userId,
       postImage,
     );
@@ -46,7 +63,7 @@ class PostService {
     await postIdValidation.validateAsync(postId);
     const post = await this.postRepository.getDetailPost(postId);
 
-    if (!post) throw { msg: '존재하지 않는 게시글', code: 400 };
+    if (!post) throw badRequest('존재하지 않는 게시글');
 
     return post;
   };
@@ -55,9 +72,9 @@ class PostService {
     await PreviousPostValidation.validateAsync({ postId, userId });
     const existPostContent = await this.postRepository.getPreviousPost(postId);
 
-    if (!existPostContent) throw { msg: '존재하지 않는 게시글', code: 400 };
+    if (!existPostContent) throw badRequest('존재하지 않는 게시글');
     if (userId !== existPostContent.userId)
-      throw { msg: '사용자정보 불일치', code: 403 };
+      throw forbidden('사용자정보 불일치');
 
     return existPostContent;
   };
@@ -72,8 +89,8 @@ class PostService {
     });
     const post = await this.postRepository.getPreviousPost(postId);
 
-    if (!post) throw { msg: '존재하지 않는 게시글', code: 400 };
-    if (userId !== post.userId) throw { msg: '사용자정보 불일치', code: 403 };
+    if (!post) throw badRequest('존재하지 않는 게시글');
+    if (userId !== post.userId) throw forbidden('사용자정보 불일치');
     await this.postRepository.updatePost(postId, title, content, postImage);
     if (postImage) {
       const imageKey =
@@ -88,8 +105,8 @@ class PostService {
 
     const post = await this.postRepository.getPreviousPost(postId);
 
-    if (!post) throw { msg: '존재하지 않는 게시글', code: 400 };
-    if (userId !== post.userId) throw { msg: '사용자정보 불일치', code: 403 };
+    if (!post) throw badRequest('존재하지 않는 게시글');
+    if (userId !== post.userId) throw forbidden('사용자정보 불일치');
     await this.postRepository.deletePost(postId);
     if (post.postImage) {
       const imageKey =
@@ -102,6 +119,13 @@ class PostService {
   deleteS3Image = async (postKey) => {
     const imageKey = postKey.split('/')[postKey.split('/').length - 1];
     await this.postS3Repository.deleteS3Image(imageKey);
+  };
+
+  //내가 쓴 게시글 조회
+  getMyPost = async (userId) => {
+    await userIdValidation.validateAsync(userId);
+    const myposts = await this.postRepository.getMyPost(userId);
+    return myposts;
   };
 }
 
