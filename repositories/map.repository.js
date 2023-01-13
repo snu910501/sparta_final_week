@@ -7,7 +7,8 @@ const { Op } = require('sequelize');
 class MapRepository {
   getMapZoomFive = async () => {
     try {
-      const reviews = await DistrictDo.findAll();
+      const reviews = await DistrictDo.findAll({
+      });
       return reviews;
     } catch (err) {
       console.log('mapRepository getMapZoomFive Error', err);
@@ -39,6 +40,11 @@ class MapRepository {
         where: {
           lat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
           lng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
+        },
+        attributes: {
+          estateId,
+          lat,
+          lng
         }
       })
       return reviews
@@ -53,6 +59,11 @@ class MapRepository {
         where: {
           lat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
           lng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
+        },
+        attributes: {
+          estateId,
+          lat,
+          lng
         }
       })
       return reviews
