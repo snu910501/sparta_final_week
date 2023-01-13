@@ -7,6 +7,7 @@ module.exports = {
     database: 'sparta_final_week_test',
     host: process.env.DB_HOST,
     dialect: 'mysql',
+    logging: false
   },
 
   production: {

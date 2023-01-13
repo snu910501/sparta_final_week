@@ -9,20 +9,20 @@ class MapService {
 
       if (zoomLevel > 8) {
         const reviews = await this.mapRepository.getMapZoomFive();
-        console.log(reviews)
+
         return reviews
       } else if (zoomLevel > 6) {
         const reviews = await this.mapRepository.getMapZoomFour();
-        console.log(reviews)
+
         return reviews
       } else if (zoomLevel > 4) {
         const reviews = await this.mapRepository.getMapZoomThree();
-        console.log(reviews)
+
         return reviews
       }
       else if (zoomLevel > 2) {
         const reviews = await this.mapRepository.getMapZoomTwo(neLatLng, swLatLng);
-        console.log(reviews)
+
         if (zoomLevel == 4) {
           try {
             const width = (neLatLng.lng - swLatLng.lng).toFixed(4);
