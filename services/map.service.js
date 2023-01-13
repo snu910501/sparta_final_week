@@ -98,7 +98,7 @@ class MapService {
               }
 
             }
-            console.log(reviews)
+
             // 값이 있는 배열들만 프론트에 전달하려고 함
             let data = []
             for (let i = 0; i < ROW; i++) {
@@ -118,7 +118,6 @@ class MapService {
       }
       else {
         const reviews = await this.mapRepository.getMapZoomOne(neLatLng, swLatLng);
-        console.log(reviews)
         return reviews
       }
 

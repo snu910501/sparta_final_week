@@ -8,6 +8,10 @@ class MapRepository {
   getMapZoomFive = async () => {
     try {
       const reviews = await DistrictDo.findAll({
+        attributes: [
+          "review",
+          "doName",
+        ]
       });
       return reviews;
     } catch (err) {
@@ -18,7 +22,12 @@ class MapRepository {
   };
   getMapZoomFour = async () => {
     try {
-      const reviews = await DistrictCity.findAll();
+      const reviews = await DistrictCity.findAll({
+        attributes: [
+          "review",
+          "cityName",
+        ]
+      });
       return reviews;
     } catch (err) {
       console.log('mapRepository getMapZoomFour Error', err);
@@ -27,7 +36,12 @@ class MapRepository {
   };
   getMapZoomThree = async () => {
     try {
-      const reviews = await DistrictDong.findAll();
+      const reviews = await DistrictDong.findAll({
+        attributes: [
+          "review",
+          "dongName",
+        ]
+      });
       return reviews;
     } catch (err) {
       console.log('mapRepository getMapZoomThree Error', err);
@@ -41,11 +55,11 @@ class MapRepository {
           lat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
           lng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
         },
-        attributes: {
-          estateId,
-          lat,
-          lng
-        }
+        attributes: [
+          "estateId",
+          "lat",
+          "lng"
+        ]
       })
       return reviews
     } catch (err) {
@@ -60,11 +74,14 @@ class MapRepository {
           lat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
           lng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
         },
-        attributes: {
-          estateId,
-          lat,
-          lng
-        }
+        attributes: [
+          "estateId",
+          "lat",
+          "lng"
+        ]
+      })
+      reviews.map((data) => {
+        return data.dataValues
       })
       return reviews
     } catch (err) {

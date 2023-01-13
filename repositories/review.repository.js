@@ -23,19 +23,21 @@ class ReviewRepository {
     }
   };
 
-  createDo = async (doName) => {
+  createDo = async (doName, LatLng) => {
     try {
-      console.log('doname', doName);
+      console.log('doname', LatLng);
       const doExist = await DistrictDo.findOne({
         where: {
           doName: doName
         }
       })
-      console.log('zzz', doExist);
+
       if (!doExist) {
         await DistrictDo.create({
           doName: doName,
           review: 1,
+          lat: LatLng.lat,
+          lng: LatLng.lng,
         })
       } else {
         await doExist.update({
@@ -48,7 +50,7 @@ class ReviewRepository {
       throw err;
     }
   }
-  createCity = async (cityName) => {
+  createCity = async (cityName, LatLng) => {
     try {
       const cityExist = await DistrictCity.findOne({
         where: {
@@ -60,6 +62,8 @@ class ReviewRepository {
         await DistrictCity.create({
           cityName: cityName,
           review: 1,
+          lat: LatLng.lat,
+          lng: LatLng.lng,
         })
       } else {
         await cityExist.update({
@@ -71,7 +75,7 @@ class ReviewRepository {
       throw err;
     }
   }
-  createDong = async (dongName) => {
+  createDong = async (dongName, LatLng) => {
     try {
       const dongExist = await DistrictDong.findOne({
         where: {
@@ -83,6 +87,8 @@ class ReviewRepository {
         await DistrictDong.create({
           dongName: dongName,
           review: 1,
+          lat: LatLng.lat,
+          lng: LatLng.lng,
         })
       } else {
         await dongExist.update({

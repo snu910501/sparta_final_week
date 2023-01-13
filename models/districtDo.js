@@ -18,6 +18,14 @@ module.exports = class DistrictDo extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
+        lat: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        lng: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
       },
       {
         sequelize,
