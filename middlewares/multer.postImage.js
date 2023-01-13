@@ -2,6 +2,14 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const shortId = require('shortid');
 const s3 = require('../config/aws.post.s3');
+const { badRequest } = require('@hapi/boom');
+
+//이미지 형식만 걸러내는 파일필터 함수 선언
+const fileFilter = (req, file, callback) => {
+  const fileTypes = file.mimetype.split('/')[0];
+  if (fileTypes === 'image') callback(null, true);
+  else callback(badRequest('이미지 형식 아님'), false);
+};
 
 const multerPostImage = multer({
   storage: multerS3({
@@ -16,7 +24,9 @@ const multerPostImage = multer({
       );
     },
   }),
-  limits: { fileSize: 20 * 1024 * 1024 },
+  // 파일 최대크기 10MB, 파일 전송 개수제한 1개, 데이터전송시 파일을 제외한 필드 개수 9개
+  limits: { fileSize: 10 * 1024 * 1024, files: 1, fields: 9 },
+  fileFilter: fileFilter,
 });
 
 module.exports = multerPostImage;
