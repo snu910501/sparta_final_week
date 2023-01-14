@@ -116,9 +116,11 @@ class MapService {
 
         }
       }
-      else {
+      else if (zoomLevel > 0) {
         const reviews = await this.mapRepository.getMapZoomOne(neLatLng, swLatLng);
         return reviews
+      } else {
+        return;
       }
 
     } catch (err) {
