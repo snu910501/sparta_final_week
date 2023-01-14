@@ -9,6 +9,7 @@ const app = express();
 app.set('port', process.env.NODE_ENV || '3001');
 const { sequelize } = require('./models');
 const indexRouter = require('./routes');
+const errorHandler = require('./modules/errorHandler');
 passportConfig(passport);
 
 const corsOption = {
@@ -42,6 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', indexRouter);
+app.use(errorHandler);
 
 const server = app.listen(app.get('port'), () => {
   console.log(app.get('port'), '번 포트에서 대기중');

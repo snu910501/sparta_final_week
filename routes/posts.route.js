@@ -6,13 +6,14 @@ const postRouter = Router();
 const postController = new PostController();
 const { isLoggedIn } = require('../middlewares/auth');
 
-postRouter.get('', postController.getLocationPosts);
 postRouter.post(
   '',
   isLoggedIn,
   multerPostImage.single('postImage'),
   postController.createPost,
 );
+postRouter.get('', postController.getLocationPosts);
+postRouter.get('/me', isLoggedIn, postController.getMyPost);
 postRouter.get('/:postid', postController.getDetailPost);
 postRouter.get('/update/:postid', isLoggedIn, postController.getPreviousPost);
 postRouter.patch(
