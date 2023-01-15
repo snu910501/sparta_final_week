@@ -3,6 +3,7 @@ const reviewValidate = require('../modules/reviewValidate');
 const imagesValidate = require('../modules/imagesValidate');
 const administrativeDistrict = require("../static/administrativeDistrict");
 const addressToGeO = require('../modules/addressToGeo');
+const Error = require("../modules/error");
 
 class ReviewService {
   reviewRepository = new ReviewRepository();
@@ -136,6 +137,24 @@ class ReviewService {
       throw err;
     }
   };
+
+findReview = async(reviewId) => {
+  try{
+    //리뷰가 있는지 먼저 찾고, 없으면 에러, 있으면 데이터 response
+
+    const reviewExist = await this.reviewRepository.findReview(reviewId);
+    if(reviewExist) {
+      return reviewExist;
+    } else {
+      const error = new Error(405, '해당 리뷰의 ID가 존재하지 않습니다.');
+      throw error
+    }
+
+  } catch(err) {
+    throw error
+  }
+}
+
 }
 
 module.exports = ReviewService;

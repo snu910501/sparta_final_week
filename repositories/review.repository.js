@@ -101,16 +101,6 @@ class ReviewRepository {
     }
   }
 
-  assignPointDo = async (doName) => {
-
-  }
-  assignPointCity = async (cityName) => {
-
-  }
-  assignPointDong = async (dongName) => {
-
-  }
-
   createEstate = async (address, address_jibun, latLng) => {
     try {
       let estate = await Estate.create({
@@ -181,6 +171,26 @@ class ReviewRepository {
     )
     return { review, estateInfo }
   };
+
+  findReview = async(reviewId) => {
+    try{
+      const review = await this.Review.findOne({
+        where : {
+          reviewId : reviewId
+        }
+      })
+
+      const estateInfo = await this.EstateInfo.findOne({
+        where : {
+          reviewId : reviewId
+        }
+      })
+
+      return {review, estateInfo}
+    } catch(err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = ReviewRepository;

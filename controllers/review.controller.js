@@ -60,6 +60,24 @@ class ReviewController {
       }
     }
   };
+  findReview = async(req, res) => {
+    try{
+      const reviewId = req.params.reviewId;
+
+      const review = await this.reviewService.findReview(reviewId);
+      return res.status(200).json({data : review})
+    } catch(err) {
+      console.log('review.controller Error', err);
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage });
+      } else {
+        return res.status(500).json({ errorMessage: 'error' });
+      }
+    }
+    
+
+
+  }
 }
 
 module.exports = ReviewController;
