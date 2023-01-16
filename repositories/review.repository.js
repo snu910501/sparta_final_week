@@ -187,7 +187,7 @@ class ReviewRepository {
 
   getReview = async (estateId) => {
     try {
-      // let review = [];
+      let reviewArr = [];
 
       const reviews = await Review.findAll({
         where: {
@@ -217,15 +217,10 @@ class ReviewRepository {
         reviewImages.map(async (r) => {
           review.dataValues.imageUrl.push(r.dataValues.url)
         })
-        console.log(review.dataValues);
-        // reviewImages.map(async (ri) => {
-        //   r.dataValues.imageUrl = ri.dataValues;
-        // })
-        // console.log('skd', r.dataValues)
-        // review.push(r.dataValues);
+        return reviews
       })
-
-      // return { review, estateInfo };
+      console.log('bbb', reviews);
+      return { reviewArr, estateInfo };
     } catch (err) {
       console.log(err);
       throw err;
