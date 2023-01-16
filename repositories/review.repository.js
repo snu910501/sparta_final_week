@@ -187,8 +187,8 @@ class ReviewRepository {
 
   getReview = async (estateId) => {
     try {
-      let reviewArr = [];
 
+      //해당 건물에 달린 리뷰와 해당 건물에 대한 정보들을 불러온다.
       const reviews = await Review.findAll({
         where: {
           estateId: estateId
@@ -206,21 +206,16 @@ class ReviewRepository {
         }
       });
 
-      reviews.map(async (review) => {
-        const reviewImages = await ReviewImage.findAll({
-          where: {
-            reviewId: review.reviewId,
-          },
-          attributes: ["url", "reviewId"]
-        })
-        review.dataValues.imageUrl = [];
-        reviewImages.map(async (r) => {
-          review.dataValues.imageUrl.push(r.dataValues.url)
-        })
-        return reviews
+      const estate = await Estate.findOne({
+        where : {
+          estateId : estateId
+        },
+        attributes : [
+          "address_jibun"
+        ]
       })
-      console.log('bbb', reviews);
-      return { reviewArr, estateInfo };
+      
+      return { reviews, estateInfo, estate };
     } catch (err) {
       console.log(err);
       throw err;

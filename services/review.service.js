@@ -4,6 +4,7 @@ const imagesValidate = require('../modules/imagesValidate');
 const administrativeDistrict = require("../static/administrativeDistrict");
 const addressToGeO = require('../modules/addressToGeo');
 const uploadImageToS3 = require('../modules/uploadImageToS3');
+const ReviewImage = require('../models/reviewImage');
 
 class ReviewService {
   reviewRepository = new ReviewRepository();
@@ -140,8 +141,65 @@ class ReviewService {
   };
 
   getReview = async (estateId) => {
-    const reviewEstateInfo = await this.reviewRepository.getReview(estateId);
+    const reviewEstateInfoEstate = await this.reviewRepository.getReview(estateId);
 
+    const reviews = reviewEstateInfoEstate.reviews;
+    const estateInfos = reviewEstateInfoEstate.estateInfo;
+    const estate = reviewEstateInfoEstate.estate;
+
+
+    // review에 imageUrl을 넣어주는 코드
+    let reviewArr = await Promise.all(
+      reviews.map(async (review) => {
+        const reviewImages = await ReviewImage.findAll({
+          where: {
+            reviewId: review.reviewId,
+          },
+          attributes: ["url", "reviewId"]
+        })
+        review.dataValues.imageUrl = [];
+        reviewImages.map(async (r) => {
+          review.dataValues.imageUrl.push(r.dataValues.url)
+        })
+        return await review.dataValues
+      })
+    )
+
+    // estateInfo는 평균점수를 내야하기 때문에 estateInfo라는 객체를 만들고
+    // 각자 합산해서 길이만큼 나눠서 평균값들을 구햇따.
+   const estateInfo = {
+    communication : 0,
+    bug : 0,
+    smell : 0,
+    floor_noise : 0,
+    walls_noise : 0,
+    town_noise : 0,
+    mold : 0,
+    parking : 0,
+    safe : 0,
+   } 
+
+   let estateInfoArr = await Promise.all(
+    estateInfos.map(async(e) => {
+      estateInfo.communication += e.communication,
+      estateInfo.bug += e.bug,
+      estateInfo.smell += e.smell,
+      estateInfo.floor_noise += e.floor_noise,
+      estateInfo.walls_noise += e.walls_noise,
+      estateInfo.town_noise += e.town_noise,
+      estateInfo.mold += e.mold,
+      estateInfo.parking += e.parking,
+      estateInfo.safe += e.safe
+      
+      return estateInfo
+    })
+   )
+    for(let key in estateInfoArr[0]) {
+      
+      estateInfoArr[0][key] /= estateInfos.length;
+    }
+
+    return {reviewArr,estateInfoArr,estate}
   }
 }
 
