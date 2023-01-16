@@ -6,6 +6,7 @@ const {
   updateCommentValidation,
   deleteCommentValidation,
 } = require('../validations/comment.validation');
+const { badRequest, forbidden } = require('@hapi/boom');
 const { postIdValidation } = require('../validations/post.validation');
 
 class CommentService {
@@ -18,7 +19,7 @@ class CommentService {
     await createCommentValidation.validateAsync({ userId, postId, content });
     const existPost = await this.postRepository.getDetailPost(postId);
 
-    if (!existPost) throw { msg: '존재하지 않는 게시글', code: 400 };
+    if (!existPost.postId) throw badRequest('존재하지 않는 게시글');
 
     await this.commentRepsitory.createComment(userId, postId, content);
   };
@@ -26,7 +27,7 @@ class CommentService {
     await postIdValidation.validateAsync(postId);
     const existPost = await this.postRepository.getDetailPost(postId);
 
-    if (!existPost) throw { msg: '존재하지 않는 게시글', code: 400 };
+    if (!existPost.postId) throw badRequest('존재하지 않는 게시글');
 
     const comments = await this.commentRepsitory.getComments(postId);
 
@@ -36,9 +37,8 @@ class CommentService {
     await updateCommentValidation.validateAsync({ userId, commentId, content });
     const comment = await this.commentRepsitory.getComment(commentId);
 
-    if (!comment) throw { msg: '존재하지 않는 댓글', code: 400 };
-    if (userId !== comment.userId)
-      throw { msg: '사용자 정보 불일치', code: 403 };
+    if (!comment) throw badRequest('존재하지 않는 댓글');
+    if (userId !== comment.userId) throw forbidden('사용자 정보 불일치');
 
     await this.commentRepsitory.updateComment(commentId, content);
   };
@@ -46,9 +46,8 @@ class CommentService {
     await deleteCommentValidation.validateAsync({ userId, commentId });
     const comment = await this.commentRepsitory.getComment(commentId);
 
-    if (!comment) throw { msg: '존재하지 않는 댓글', code: 400 };
-    if (userId !== comment.userId)
-      throw { msg: '사용자 정보 불일치', code: 403 };
+    if (!comment) throw badRequest('존재하지 않는 댓글');
+    if (userId !== comment.userId) throw forbidden('사용자 정보 불일치');
 
     await this.commentRepsitory.deleteComment(commentId);
   };
