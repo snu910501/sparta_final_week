@@ -1,10 +1,10 @@
-require('dotenv').config()
+require('dotenv').config();
 
 module.exports = {
   development: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PW,
-    database: 'sparta_final_week',
+    database: 'sparta_final_week2',
     host: process.env.DB_HOST,
     dialect: 'mysql',
   },
