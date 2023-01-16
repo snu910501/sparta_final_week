@@ -1,6 +1,6 @@
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-const shortId = require('shortid');
+const { nanoid } = require('nanoid');
 const s3 = require('../config/aws.post.s3');
 const { badRequest } = require('@hapi/boom');
 
@@ -18,10 +18,7 @@ const multerPostImage = multer({
     acl: 'public-read',
     key(req, file, callback) {
       const imageType = file.mimetype.split('/')[1];
-      callback(
-        null,
-        `final-project/${Date.now()}_${shortId.generate()}.${imageType}`,
-      );
+      callback(null, `final-project/${nanoid()}.${imageType}`);
     },
   }),
   // 파일 최대크기 10MB, 파일 전송 개수제한 1개, 데이터전송시 파일을 제외한 필드 개수 9개

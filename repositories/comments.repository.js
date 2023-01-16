@@ -1,5 +1,5 @@
 const { Users } = require('../models');
-
+const { Sequelize } = require('sequelize');
 class CommentRepository {
   constructor(commentsModel) {
     this.commentsModel = commentsModel;
@@ -8,11 +8,16 @@ class CommentRepository {
   createComment = async (userId, postId, content) => {
     await this.commentsModel.create({ userId, postId, content });
   };
-  //, 'profileImage' 넣을지 말지 정해야 됨
+
   getComments = async (postId) => {
     const comments = await this.commentsModel.findAll({
       where: { postId },
-      include: [{ model: Users, attributes: ['nickname'] }],
+      attributes: [
+        'content',
+        [Sequelize.col('User.nickname'), 'nickname'],
+        [Sequelize.col('User.profileImg'), 'profileImg'],
+      ],
+      include: [{ model: Users, attributes: [] }],
     });
     return comments;
   };
