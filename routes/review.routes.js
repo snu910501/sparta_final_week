@@ -21,5 +21,6 @@ const upload = multer({
 });
 
 router.post('/', upload.array('images', 5), estateController.createReview)
+router.get('/items/:estateId', estateController.getReview)
 
 module.exports = router;

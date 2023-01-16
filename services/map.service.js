@@ -96,7 +96,6 @@ class MapService {
               } else {
                 arr[width][height].push(reviews[i].dataValues)
               }
-
             }
 
             // 값이 있는 배열들만 프론트에 전달하려고 함

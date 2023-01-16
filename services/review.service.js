@@ -3,6 +3,7 @@ const reviewValidate = require('../modules/reviewValidate');
 const imagesValidate = require('../modules/imagesValidate');
 const administrativeDistrict = require("../static/administrativeDistrict");
 const addressToGeO = require('../modules/addressToGeo');
+const uploadImageToS3 = require('../modules/uploadImageToS3');
 
 class ReviewService {
   reviewRepository = new ReviewRepository();
@@ -57,6 +58,7 @@ class ReviewService {
       // 이미지에 대한 유효성 검사를 실시함
       await imagesValidate(images);
 
+      const imageUrls = await uploadImageToS3(images)
       // 지번 주소를 가지고 나눠서 도/시/동 으로 행정구역을 나눠서 저장을 한다.
       const doCityDong = address_jibun.split(' ');
 
@@ -99,7 +101,7 @@ class ReviewService {
           mold,
           parking,
           safe,
-
+          imageUrls
         );
         return review;
       } else {
@@ -126,7 +128,7 @@ class ReviewService {
           mold,
           parking,
           safe,
-
+          imageUrls
         );
         return review;
       }
@@ -136,6 +138,11 @@ class ReviewService {
       throw err;
     }
   };
+
+  getReview = async (estateId) => {
+    const reviewEstateInfo = await this.reviewRepository.getReview(estateId);
+
+  }
 }
 
 module.exports = ReviewService;

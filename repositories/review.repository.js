@@ -4,6 +4,9 @@ const Estate = require('../models/estate');
 const DistrictDo = require("../models/districtDo");
 const DistrictCity = require('../models/districtCity');
 const DistrictDong = require('../models/districtDong');
+const ReviewImage = require('../models/reviewImage');
+
+const error = require('../modules/error');
 
 
 // 경기도 전라도 의 도를 Do로 나타냄
@@ -101,16 +104,6 @@ class ReviewRepository {
     }
   }
 
-  assignPointDo = async (doName) => {
-
-  }
-  assignPointCity = async (cityName) => {
-
-  }
-  assignPointDong = async (dongName) => {
-
-  }
-
   createEstate = async (address, address_jibun, latLng) => {
     try {
       let estate = await Estate.create({
@@ -148,8 +141,9 @@ class ReviewRepository {
     mold,
     parking,
     safe,
-
+    imageUrls
   ) => {
+
     let review = await Review.create(
       {
         estateId,
@@ -164,6 +158,7 @@ class ReviewRepository {
         acreage,
       }
     );
+
     let estateInfo = await EstateInfo.create(
       {
         reviewId: review.reviewId,
@@ -179,8 +174,63 @@ class ReviewRepository {
         safe,
       }
     )
+
+    imageUrls.map((image) => {
+      ReviewImage.create({
+        reviewId: review.reviewId,
+        key: image.fileName,
+        url: image.location,
+      })
+    })
     return { review, estateInfo }
   };
+
+  getReview = async (estateId) => {
+    try {
+      // let review = [];
+
+      const reviews = await Review.findAll({
+        where: {
+          estateId: estateId
+        }
+      });
+
+      if (!reviews) {
+        const error = new Error(405, '존재하지 않는 estateId 입니다.')
+        throw error;
+      };
+
+      const estateInfo = await EstateInfo.findAll({
+        where: {
+          estateId: estateId
+        }
+      });
+
+      reviews.map(async (review) => {
+        const reviewImages = await ReviewImage.findAll({
+          where: {
+            reviewId: review.reviewId,
+          },
+          attributes: ["url", "reviewId"]
+        })
+        review.dataValues.imageUrl = [];
+        reviewImages.map(async (r) => {
+          review.dataValues.imageUrl.push(r.dataValues.url)
+        })
+        console.log(review.dataValues);
+        // reviewImages.map(async (ri) => {
+        //   r.dataValues.imageUrl = ri.dataValues;
+        // })
+        // console.log('skd', r.dataValues)
+        // review.push(r.dataValues);
+      })
+
+      // return { review, estateInfo };
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
 }
 
 module.exports = ReviewRepository;
