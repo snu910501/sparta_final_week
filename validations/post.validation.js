@@ -1,15 +1,15 @@
 const joi = require('joi');
 
 const postLocationValidation = joi.object().keys({
-  postLocation1: joi.string().allow(''),
-  postLocation2: joi.string().allow(''),
+  postLocation1: joi.string().allow('').not('undefined'),
+  postLocation2: joi.string().allow('').not('undefined'),
 });
 
 const createPostValidation = joi.object().keys({
   title: joi.string().trim().required().min(1).max(50),
   content: joi.string().trim().required().min(1).max(10000),
-  postLocation1: joi.string().required(),
-  postLocation2: joi.string().required(),
+  postLocation1: joi.string().trim().required().not('undefined'),
+  postLocation2: joi.string().trim().required().not('undefined'),
   userId: joi.number().required(),
   postImage: joi.string(),
 });

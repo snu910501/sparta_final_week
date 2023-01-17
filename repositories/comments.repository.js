@@ -1,5 +1,5 @@
-const { Users } = require('../models');
-const { Sequelize } = require('sequelize');
+const { Users, Comments } = require('../models');
+const { Sequelize, Op } = require('sequelize');
 class CommentRepository {
   constructor(commentsModel) {
     this.commentsModel = commentsModel;
@@ -11,13 +11,23 @@ class CommentRepository {
 
   getComments = async (postId) => {
     const comments = await this.commentsModel.findAll({
-      where: { postId },
+      where: { [Op.and]: [{ postId }, { parentCommentId: null }] },
       attributes: [
         'content',
+        'createdAt',
         [Sequelize.col('User.nickname'), 'nickname'],
         [Sequelize.col('User.profileImg'), 'profileImg'],
       ],
-      include: [{ model: Users, attributes: [] }],
+      include: [
+        { model: Users, attributes: [] },
+        {
+          model: Comments,
+          as: 'reComments',
+          required: false,
+          attributes: ['content', 'createdAt'],
+          include: [{ model: Users, attributes: ['nickname', 'profileImg'] }],
+        },
+      ],
     });
     return comments;
   };
@@ -33,6 +43,14 @@ class CommentRepository {
 
   deleteComment = async (commentId) => {
     await this.commentsModel.destroy({ where: { commentId } });
+  };
+  createReComment = async (userId, postId, content, parentCommentId) => {
+    await this.commentsModel.create({
+      userId,
+      postId,
+      content,
+      parentCommentId,
+    });
   };
 }
 

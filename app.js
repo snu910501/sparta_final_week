@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const app = express();
-app.set('port', process.env.NODE_ENV || '3001');
+app.set('port', process.env.PORT || '3001');
 const { sequelize } = require('./models');
 const indexRouter = require('./routes');
 const errorHandler = require('./modules/errorHandler');
