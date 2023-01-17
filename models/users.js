@@ -53,5 +53,11 @@ module.exports = class Users extends Sequelize.Model {
       onDelete: 'cascade',
       onUpdate: 'cascade',
     });
+    db.Users.hasMany(db.Refreshs, {
+      foreignKey: 'userId',
+      sourceKey: 'userId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    });
   }
 };
