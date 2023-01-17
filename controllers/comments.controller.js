@@ -10,7 +10,7 @@ class CommentController {
       const postId = req.params.postid;
       const { content } = req.body;
       await this.commentService.createComment(userId, postId, content);
-      return res.status(200).json({ msg: '작성 성공' });
+      return res.status(200).json({ msg: '댓글 작성 성공' });
     } catch (err) {
       next(err);
     }
@@ -41,6 +41,22 @@ class CommentController {
       const commentId = req.params.commentid;
       await this.commentService.deleteComment(userId, commentId);
       return res.status(200).json({ msg: '삭제 성공' });
+    } catch (err) {
+      next(err);
+    }
+  };
+  createReComment = async (req, res, next) => {
+    try {
+      const userId = res.locals;
+      const { postid, commentid } = req.params;
+      const { content } = req.body;
+      await this.commentService.createReComment(
+        userId,
+        postid,
+        content,
+        commentid,
+      );
+      return res.status(200).json({ msg: '대댓글 작성 성공' });
     } catch (err) {
       next(err);
     }

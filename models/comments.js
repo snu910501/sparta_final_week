@@ -22,6 +22,10 @@ module.exports = class Comments extends Sequelize.Model {
           allowNull: false,
           type: Sequelize.STRING(100),
         },
+        parentCommentId: {
+          allowNull: true,
+          type: Sequelize.INTEGER,
+        },
       },
       {
         sequelize,
@@ -41,13 +45,21 @@ module.exports = class Comments extends Sequelize.Model {
       foreignKey: 'userId',
       targetKey: 'userId',
       onDelete: 'cascade',
-      onUpdate: 'cascade',
     });
     db.Comments.belongsTo(db.Posts, {
       foreignKey: 'postId',
       targetKey: 'postId',
       onDelete: 'cascade',
-      onUpdate: 'cascade',
+    });
+    db.Comments.hasMany(db.Comments, {
+      as: 'reComments',
+      foreignKey: 'parentCommentId',
+      targetKey: 'commentId',
+    });
+    db.Comments.belongsTo(db.Comments, {
+      as: 'parentComment',
+      foreignKey: 'parentCommentId',
+      targetKey: 'commentId',
     });
   }
 };

@@ -20,5 +20,9 @@ commentRouter.delete(
   isLoggedIn,
   commentController.deleteComment,
 );
-
+commentRouter.post(
+  '/posts/:postid/comments/:commentid',
+  isLoggedIn,
+  commentController.createReComment,
+);
 module.exports = commentRouter;
