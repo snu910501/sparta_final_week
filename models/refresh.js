@@ -33,7 +33,7 @@ module.exports = class Refreshs extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.Refresh.belongsTo(db.Users, {
+    db.Refreshs.belongsTo(db.Users, {
       foreignKey: 'userId',
       sourceKey: 'userId',
       onDelete: 'cascade',

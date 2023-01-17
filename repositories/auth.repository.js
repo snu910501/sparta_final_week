@@ -1,6 +1,7 @@
 class AuthRepository {
-  constructor(UsersModel) {
+  constructor(UsersModel, RefreshsModel) {
     this.usersModel = UsersModel;
+    this.refreshsModel = RefreshsModel;
   }
 
   createUser = async ({ snsId, nickname, email, profileImg }) => {
@@ -16,6 +17,22 @@ class AuthRepository {
   findByUser = async (email) => {
     const userSnsId = await this.usersModel.findOne({ where: { email } });
     return userSnsId;
+  };
+
+  createRefreshToken = async ({ userId, refreshToken }) => {
+    const newRefreshToken = await this.refreshsModel.create({
+      userId,
+      refreshToken,
+    });
+    return newRefreshToken;
+  };
+
+  updateToken = async ({ userId, refreshToken }) => {
+    const updateRefreshToken = await this.refreshsModel.update(
+      { refreshToken },
+      { where: { userId } },
+    );
+    return updateRefreshToken;
   };
 }
 

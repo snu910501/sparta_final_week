@@ -1,11 +1,12 @@
 const axios = require('axios');
 const AuthRepository = require('../repositories/auth.repository');
-const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
+const { Refreshs } = require('../models');
+const createToken = require('../modules/jwt');
 
 class AuthService {
   constructor() {
-    this.authRepository = new AuthRepository(Users);
+    this.authRepository = new AuthRepository(Users, Refreshs);
   }
 
   kakaoLogin = async (code) => {
@@ -40,6 +41,7 @@ class AuthService {
     );
 
     let accessToken = '';
+    let refreshToken = '';
 
     if (!existUser) {
       const newUser = await this.authRepository.createUser({
@@ -48,37 +50,44 @@ class AuthService {
         email: data.kakao_account.email,
         profileImg: data.properties.profile_image,
       });
-      accessToken = jwt.sign(
-        { userId: newUser.userId, nickname: newUser.nickname },
-        process.env.ACCESS_SECRET_KEY,
-        {
-          expiresIn: '12h',
-        },
-      );
+
       const { userId, nickname, email, profileImg } = newUser;
+      accessToken = await createToken.createAccessToken(
+        newUser.userId,
+        newUser.nickname,
+      );
+      refreshToken = await createToken.createRefreshToken();
+      await this.authRepository.createRefreshToken({
+        userId: newUser.userId,
+        refreshToken,
+      });
       return {
         userId,
         nickname,
         email,
         profileImg,
         accessToken,
+        refreshToken,
       };
     }
     if (existUser) {
-      accessToken = jwt.sign(
-        { userId: existUser.userId, nickname: existUser.nickname },
-        process.env.ACCESS_SECRET_KEY,
-        {
-          expiresIn: '12h',
-        },
-      );
       const { userId, nickname, email, profileImg } = existUser;
+      accessToken = await createToken.createAccessToken(
+        existUser.userId,
+        existUser.nickname,
+      );
+      refreshToken = await createToken.createRefreshToken();
+      await this.authRepository.updateToken({
+        userId: existUser.userId,
+        refreshToken,
+      });
       return {
         userId,
         nickname,
         email,
         profileImg,
         accessToken,
+        refreshToken,
       };
     }
   };
