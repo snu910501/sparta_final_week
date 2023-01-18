@@ -79,7 +79,7 @@ class ReviewController {
 
   myReview = async (req, res) => {
     try {
-      const userId = req.params.userId
+      const userId = req.body.userId
       const reviews = await this.reviewService.myReview(userId);
       return res.status(200).json({ data: reviews })
 
