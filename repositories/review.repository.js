@@ -207,14 +207,14 @@ class ReviewRepository {
       });
 
       const estate = await Estate.findOne({
-        where : {
-          estateId : estateId
+        where: {
+          estateId: estateId
         },
-        attributes : [
+        attributes: [
           "address_jibun"
         ]
       })
-      
+
       return { reviews, estateInfo, estate };
     } catch (err) {
       console.log(err);
