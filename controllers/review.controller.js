@@ -80,9 +80,9 @@ class ReviewController {
   myReview = async (req, res) => {
     try {
       const userId = req.params.userId
-
       const reviews = await this.reviewService.myReview(userId);
       return res.status(200).json({ data: reviews })
+
     } catch (err) {
       console.log('CreateController error');
       if (err.status) {
