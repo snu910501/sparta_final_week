@@ -1,4 +1,4 @@
-const { Users, Comments } = require('../models');
+const { Users, Comments, Posts } = require('../models');
 const { Sequelize, Op } = require('sequelize');
 class CommentRepository {
   constructor(commentsModel) {
@@ -13,6 +13,7 @@ class CommentRepository {
     const comments = await this.commentsModel.findAll({
       where: { [Op.and]: [{ postId }, { parentCommentId: null }] },
       attributes: [
+        'commentsId',
         'content',
         'createdAt',
         [Sequelize.col('User.nickname'), 'nickname'],
@@ -51,6 +52,19 @@ class CommentRepository {
       content,
       parentCommentId,
     });
+  };
+  getMyComments = async (userId) => {
+    const myComments = await this.commentsModel.findAll({
+      where: { userId },
+      order: [['createdAt', 'DESC']],
+      attributes: [
+        'content',
+        'createdAt',
+        [Sequelize.col('Post.title'), 'title'],
+      ],
+      include: [{ model: Posts, attributes: [] }],
+    });
+    return myComments;
   };
 }
 
