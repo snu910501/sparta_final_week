@@ -13,6 +13,7 @@ class CommentRepository {
     const comments = await this.commentsModel.findAll({
       where: { [Op.and]: [{ postId }, { parentCommentId: null }] },
       attributes: [
+        'commentsId',
         'content',
         'createdAt',
         [Sequelize.col('User.nickname'), 'nickname'],
