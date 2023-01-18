@@ -73,8 +73,15 @@ class PostRepository {
         'createdAt',
         [Sequelize.col('User.nickname'), 'nickname'],
         [Sequelize.col('User.profileImg'), 'profileImg'],
+        [
+          Sequelize.fn('COUNT', Sequelize.col('Comments.commentId')),
+          'commentsCount',
+        ],
       ],
-      include: [{ model: Users, attributes: [] }],
+      include: [
+        { model: Users, attributes: [] },
+        { model: Comments, attributes: [] },
+      ],
     });
     return post;
   };
