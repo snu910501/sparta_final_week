@@ -92,7 +92,7 @@ class PostService {
     if (!post) throw badRequest('존재하지 않는 게시글');
     if (userId !== post.userId) throw forbidden('사용자정보 불일치');
     await this.postRepository.updatePost(postId, title, content, postImage);
-    if (postImage) {
+    if (postImage && post.postImage) {
       const imageKey =
         post.postImage.split('/')[post.postImage.split('/').length - 1];
       await this.postS3Repository.deleteS3Image(imageKey);
