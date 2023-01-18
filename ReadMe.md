@@ -1,13 +1,12 @@
 # 프로젝트 소개
 
-휴대폰 구매자와 지원금을 가장 많이 주는 판매자와 매칭시켜주는
-웹사이트입니다.
+원룸 후기 정보 공유 사이트
 
 # 1조 백엔드 팀 소개
 
 - 박영호 - 팀장 서비스 로직 구현
-- 권태형 - 팀원 Socket.IO 채팅 담당
-- 서정득 - 팀원 Passport를 활용해 로컬로그인과 카카오(SNS)로그인 구현
+- 권태형 - 팀원 커뮤니티 담당 로직 구현
+- 서정득 - 팀원 카카오(SNS)로그인 구현
 
 # 백엔드에서 시도한 것들
 
@@ -16,8 +15,7 @@
 - 프런트에서 잘못된 형식으로 보낸 request로 서버가 셧다운 되지 않도록 에러미들웨어 적용, try catch로 에러 잡기
 - 깃 전략 (develop 브랜치로 머지하고 최종본 master로 배포하기)
 - prettier 사용하여 pull request 시 conflict 최소화
-- Socket.io를 사용하여 실시간 데이터 전송 기능 구현
-- KAKAO TALK 로그인 구현
+- KAKAO 소셜 로그인 구현
 - 데이터 분석에서 최선의 결과 도출
 
 # 백엔드 기술 스택
@@ -29,9 +27,7 @@
 - Sequelize
 - mySQL
 - jsonwebtoken
-- bcrypt
-- socket.io
-- mongoDB
+- Nginx
 
 # ERD
 

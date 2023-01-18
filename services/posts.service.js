@@ -28,7 +28,7 @@ class PostService {
       postLocation2,
     );
 
-    if (!posts) throw badRequest('지역 게시물 없음');
+    if (posts.length === 0) throw badRequest('지역 게시물 없음');
 
     return posts;
   };
@@ -63,7 +63,7 @@ class PostService {
     await postIdValidation.validateAsync(postId);
     const post = await this.postRepository.getDetailPost(postId);
 
-    if (!post) throw badRequest('존재하지 않는 게시글');
+    if (!post.postId) throw badRequest('존재하지 않는 게시글');
 
     return post;
   };
