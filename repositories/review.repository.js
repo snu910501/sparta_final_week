@@ -221,6 +221,38 @@ class ReviewRepository {
       throw err;
     }
   }
+
+  myReview = async (userId) => {
+    try {
+      const reviews = await Review.findAll({
+        where: {
+          userId: userId
+        },
+        attributes: [
+          'star',
+          'createdAt',
+          'estateId',
+        ]
+      })
+
+      let data = await Promise.all(reviews.map(async (review) => {
+        const address = await Estate.findOne({
+          where: {
+            estateId: review.estateId
+          },
+          attributes: [
+            'address_jibun'
+          ]
+        })
+        review.dataValues.address = address.address_jibun
+        return review.dataValues
+      }))
+
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = ReviewRepository;

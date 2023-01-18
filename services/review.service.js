@@ -167,39 +167,48 @@ class ReviewService {
 
     // estateInfo는 평균점수를 내야하기 때문에 estateInfo라는 객체를 만들고
     // 각자 합산해서 길이만큼 나눠서 평균값들을 구햇따.
-   const estateInfo = {
-    communication : 0,
-    bug : 0,
-    smell : 0,
-    floor_noise : 0,
-    walls_noise : 0,
-    town_noise : 0,
-    mold : 0,
-    parking : 0,
-    safe : 0,
-   } 
+    const estateInfo = {
+      communication: 0,
+      bug: 0,
+      smell: 0,
+      floor_noise: 0,
+      walls_noise: 0,
+      town_noise: 0,
+      mold: 0,
+      parking: 0,
+      safe: 0,
+    }
 
-   let estateInfoArr = await Promise.all(
-    estateInfos.map(async(e) => {
-      estateInfo.communication += e.communication,
-      estateInfo.bug += e.bug,
-      estateInfo.smell += e.smell,
-      estateInfo.floor_noise += e.floor_noise,
-      estateInfo.walls_noise += e.walls_noise,
-      estateInfo.town_noise += e.town_noise,
-      estateInfo.mold += e.mold,
-      estateInfo.parking += e.parking,
-      estateInfo.safe += e.safe
-      
-      return estateInfo
-    })
-   )
-    for(let key in estateInfoArr[0]) {
-      
+    let estateInfoArr = await Promise.all(
+      estateInfos.map(async (e) => {
+        estateInfo.communication += e.communication,
+          estateInfo.bug += e.bug,
+          estateInfo.smell += e.smell,
+          estateInfo.floor_noise += e.floor_noise,
+          estateInfo.walls_noise += e.walls_noise,
+          estateInfo.town_noise += e.town_noise,
+          estateInfo.mold += e.mold,
+          estateInfo.parking += e.parking,
+          estateInfo.safe += e.safe
+
+        return estateInfo
+      })
+    )
+    for (let key in estateInfoArr[0]) {
+
       estateInfoArr[0][key] /= estateInfos.length;
     }
 
-    return {reviewArr,estateInfoArr,estate}
+    return { reviewArr, estateInfoArr, estate }
+  }
+
+  myReview = async (userId) => {
+    try {
+      const reviews = await this.reviewRepository.myReview(userId);
+      return reviews;
+    } catch (err) {
+      throw err;
+    }
   }
 }
 
