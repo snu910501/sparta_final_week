@@ -61,6 +61,15 @@ class CommentController {
       next(err);
     }
   };
+  getMyComments = async (req, res, next) => {
+    try {
+      const userId = res.locals;
+      const comments = await this.commentService.getMyComments(userId);
+      res.status(200).json({ comments });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = CommentController;

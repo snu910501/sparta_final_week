@@ -9,20 +9,27 @@ commentRouter.post(
   isLoggedIn,
   commentController.createComment,
 );
+
 commentRouter.get('/posts/:postid/comments', commentController.getComments);
+
 commentRouter.put(
   '/comments/:commentid',
   isLoggedIn,
   commentController.updateComment,
 );
+
 commentRouter.delete(
   '/comments/:commentid',
   isLoggedIn,
   commentController.deleteComment,
 );
+
 commentRouter.post(
   '/posts/:postid/comments/:commentid',
   isLoggedIn,
   commentController.createReComment,
 );
+
+commentRouter.get('/comments/me', isLoggedIn, commentController.getMyComments);
+
 module.exports = commentRouter;
