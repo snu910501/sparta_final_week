@@ -91,9 +91,16 @@ class PostRepository {
     return existPostContent;
   };
 
-  updatePost = async (postId, title, content, postImage) => {
+  updatePost = async (
+    postId,
+    title,
+    content,
+    postLocation1,
+    postLocation2,
+    postImage,
+  ) => {
     await this.postsModel.update(
-      { title, content, postImage },
+      { title, content, postLocation1, postLocation2, postImage },
       { where: { postId } },
     );
   };

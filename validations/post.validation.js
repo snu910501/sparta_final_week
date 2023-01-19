@@ -25,6 +25,8 @@ const updatePostValidation = joi.object().keys({
   postId: joi.number().required(),
   title: joi.string().trim().required().min(1).max(50),
   content: joi.string().trim().required().min(1).max(10000),
+  postLocation1: joi.string().trim().required().not('undefined'),
+  postLocation2: joi.string().trim().required().not('undefined'),
   userId: joi.number().required(),
   postImage: joi.string(),
 });

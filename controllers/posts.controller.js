@@ -72,17 +72,27 @@ class PostController {
     try {
       const { userId } = res.locals;
       const postId = req.params.postid;
-      const { title, content } = req.body;
+      const { title, content, postLocation1, postLocation2 } = req.body;
       if (req.file) {
         const postImage = req.file.location;
         await this.postService.updatePost(
           postId,
           title,
           content,
+          postLocation1,
+          postLocation2,
           userId,
           postImage,
         );
-      } else await this.postService.updatePost(postId, title, content, userId);
+      } else
+        await this.postService.updatePost(
+          postId,
+          title,
+          content,
+          postLocation1,
+          postLocation2,
+          userId,
+        );
       res.status(200).json({ msg: '수정 완료' });
     } catch (err) {
       if (req.file) await this.postService.deleteS3Image(req.file.key);
