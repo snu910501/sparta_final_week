@@ -32,7 +32,7 @@ class ReviewService {
     images,
     userId
   ) => {
-
+    console.log('papa', userId)
     try {
       // 리뷰 요소에 대한 유효성 검사
       await reviewValidate(
