@@ -30,7 +30,9 @@ class ReviewService {
     bad,
     star,
     images,
+    userId
   ) => {
+
     try {
       // 리뷰 요소에 대한 유효성 검사
       await reviewValidate(
@@ -102,7 +104,8 @@ class ReviewService {
           mold,
           parking,
           safe,
-          imageUrls
+          imageUrls,
+          userId
         );
         return review;
       } else {
@@ -129,7 +132,8 @@ class ReviewService {
           mold,
           parking,
           safe,
-          imageUrls
+          imageUrls,
+          userId
         );
         return review;
       }

@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer')
-const { isLoggedIn } = require('../middlewares/auth');
+const { isLoggedIn, isNotLoggedIn } = require('../middlewares/auth');
 const router = express.Router();
 
 const EstateController = require("../controllers/review.controller");
@@ -20,7 +20,7 @@ const upload = multer({
   },
 });
 
-router.post('/', upload.array('images', 5), estateController.createReview)
+router.post('/', isLoggedIn, upload.array('images', 5), estateController.createReview)
 router.get('/items/:estateId', estateController.getReview)
 router.get('/myReview', isLoggedIn, estateController.myReview)
 

@@ -141,7 +141,8 @@ class ReviewRepository {
     mold,
     parking,
     safe,
-    imageUrls
+    imageUrls,
+    userId
   ) => {
 
     let review = await Review.create(
@@ -156,6 +157,7 @@ class ReviewRepository {
         deposit,
         monthly_payment,
         acreage,
+        userId,
       }
     );
 
