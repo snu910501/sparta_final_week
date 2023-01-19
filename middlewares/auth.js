@@ -11,7 +11,7 @@ const isLoggedIn = (req, res, next) => {
     if (authType !== 'Bearer') throw badRequest('토큰 유효성검사 실패');
 
     try {
-      res.locals = jwt.verify(authToken, ACCESS_SECRET_KEY).userId;
+      res.locals = jwt.verify(authToken, ACCESS_SECRET_KEY);
       next();
     } catch (err) {
       next(unauthorized('토큰 유효성검사 실패'));
