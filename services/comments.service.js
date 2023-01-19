@@ -6,8 +6,11 @@ const {
   updateCommentValidation,
   deleteCommentValidation,
 } = require('../validations/comment.validation');
+const {
+  postIdValidation,
+  userIdValidation,
+} = require('../validations/post.validation');
 const { badRequest, forbidden } = require('@hapi/boom');
-const { postIdValidation } = require('../validations/post.validation');
 
 class CommentService {
   constructor() {
@@ -59,6 +62,11 @@ class CommentService {
       content,
       commentId,
     );
+  };
+  getMyComments = async (userId) => {
+    await userIdValidation.validateAsync(userId);
+    const myComments = await this.commentRepsitory.getMyComments(userId);
+    return myComments;
   };
 }
 
