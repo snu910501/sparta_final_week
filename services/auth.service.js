@@ -55,6 +55,7 @@ class AuthService {
       accessToken = await createToken.createAccessToken(
         newUser.userId,
         newUser.nickname,
+        newUser.profileImg,
       );
       refreshToken = await createToken.createRefreshToken();
       await this.authRepository.createRefreshToken({
@@ -75,6 +76,7 @@ class AuthService {
       accessToken = await createToken.createAccessToken(
         existUser.userId,
         existUser.nickname,
+        existUser.profileImg,
       );
       refreshToken = await createToken.createRefreshToken();
       await this.authRepository.updateToken({
