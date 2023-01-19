@@ -73,8 +73,15 @@ class PostRepository {
         'createdAt',
         [Sequelize.col('User.nickname'), 'nickname'],
         [Sequelize.col('User.profileImg'), 'profileImg'],
+        [
+          Sequelize.fn('COUNT', Sequelize.col('Comments.commentId')),
+          'commentsCount',
+        ],
       ],
-      include: [{ model: Users, attributes: [] }],
+      include: [
+        { model: Users, attributes: [] },
+        { model: Comments, attributes: [] },
+      ],
     });
     return post;
   };
@@ -84,9 +91,16 @@ class PostRepository {
     return existPostContent;
   };
 
-  updatePost = async (postId, title, content, postImage) => {
+  updatePost = async (
+    postId,
+    title,
+    content,
+    postLocation1,
+    postLocation2,
+    postImage,
+  ) => {
     await this.postsModel.update(
-      { title, content, postImage },
+      { title, content, postLocation1, postLocation2, postImage },
       { where: { postId } },
     );
   };

@@ -27,7 +27,7 @@ class CommentService {
   getComments = async (postId) => {
     await postIdValidation.validateAsync(postId);
     const existPost = await this.postRepository.getDetailPost(postId);
-    if (!existPost) throw badRequest('존재하지 않는 게시글');
+    if (!existPost.postId) throw badRequest('존재하지 않는 게시글');
 
     const comments = await this.commentRepsitory.getComments(postId);
 
@@ -53,7 +53,7 @@ class CommentService {
   };
   createReComment = async (userId, postId, content, commentId) => {
     const existPost = await this.postRepository.getDetailPost(postId);
-    if (!existPost) throw badRequest('존재하지 않는 게시글');
+    if (!existPost.postId) throw badRequest('존재하지 않는 게시글');
     const existComment = await this.commentRepsitory.getComment(commentId);
     if (!existComment.commentId) throw badRequest('존재하지 않는 상위 댓글');
     await this.commentRepsitory.createReComment(
