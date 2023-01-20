@@ -28,16 +28,17 @@ class ReviewRepository {
 
   createDo = async (doName, LatLng) => {
     try {
-      const doExist = await DistrictDo.findOne({
-        where: {
-          doName: doName
-        }
-      })
       if (doName == '서울') {
         doName = '서울특별시';
       } else if (doName == '경기') {
         doName = '경기도';
       }
+      const doExist = await DistrictDo.findOne({
+        where: {
+          doName: doName
+        }
+      })
+
       if (!doExist) {
         await DistrictDo.create({
           doName: doName,
@@ -250,9 +251,9 @@ class ReviewRepository {
           ]
         })
         review.dataValues.address = address.address_jibun
+        console.log('kaka', review.dataValues)
         return review.dataValues
       }))
-
       return data;
     } catch (err) {
       throw err;

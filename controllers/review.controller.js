@@ -86,7 +86,7 @@ class ReviewController {
 
       return res.status(200).json({ data: reviews })
     } catch (err) {
-      console.log('CreateController error');
+      console.log('CreateController error', err);
       if (err.status) {
         return res.status(err.status).json({ errorMessage: err.errorMessage });
       } else {
