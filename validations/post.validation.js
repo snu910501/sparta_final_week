@@ -6,10 +6,10 @@ const postLocationValidation = joi.object().keys({
 });
 
 const createPostValidation = joi.object().keys({
-  title: joi.string().trim().required().min(1).max(50),
-  content: joi.string().trim().required().min(1).max(10000),
-  postLocation1: joi.string().trim().required().not('undefined'),
-  postLocation2: joi.string().trim().required().not('undefined'),
+  title: joi.string().trim().required().min(1).max(50).not(''),
+  content: joi.string().trim().required().min(1).max(10000).not(''),
+  postLocation1: joi.string().trim().required().not('undefined').not(''),
+  postLocation2: joi.string().trim().required().not('undefined').not(''),
   userId: joi.number().required(),
   postImage: joi.string(),
 });
@@ -23,8 +23,10 @@ const PreviousPostValidation = joi.object().keys({
 
 const updatePostValidation = joi.object().keys({
   postId: joi.number().required(),
-  title: joi.string().trim().required().min(1).max(50),
-  content: joi.string().trim().required().min(1).max(10000),
+  title: joi.string().trim().required().min(1).max(50).not(''),
+  content: joi.string().trim().required().min(1).max(10000).not(''),
+  postLocation1: joi.string().trim().required().not('undefined').not(''),
+  postLocation2: joi.string().trim().required().not('undefined').not(''),
   userId: joi.number().required(),
   postImage: joi.string(),
 });

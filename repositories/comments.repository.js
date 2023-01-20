@@ -25,7 +25,7 @@ class CommentRepository {
           model: Comments,
           as: 'reComments',
           required: false,
-          attributes: ['content', 'createdAt'],
+          attributes: ['commentId', 'content', 'createdAt'],
           include: [{ model: Users, attributes: ['nickname', 'profileImg'] }],
         },
       ],

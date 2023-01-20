@@ -6,9 +6,9 @@ class CommentController {
   }
   createComment = async (req, res, next) => {
     try {
-      const userId = res.locals;
+      const { userId } = res.locals;
       const postId = req.params.postid;
-      const { content } = req.body;
+      const { content } = req.filtered;
       await this.commentService.createComment(userId, postId, content);
       return res.status(200).json({ msg: '댓글 작성 성공' });
     } catch (err) {
@@ -26,9 +26,9 @@ class CommentController {
   };
   updateComment = async (req, res, next) => {
     try {
-      const userId = res.locals;
+      const { userId } = res.locals;
       const commentId = req.params.commentid;
-      const { content } = req.body;
+      const { content } = req.filtered;
       await this.commentService.updateComment(userId, commentId, content);
       return res.status(200).json({ msg: '수정 성공' });
     } catch (err) {
@@ -37,7 +37,7 @@ class CommentController {
   };
   deleteComment = async (req, res, next) => {
     try {
-      const userId = res.locals;
+      const { userId } = res.locals;
       const commentId = req.params.commentid;
       await this.commentService.deleteComment(userId, commentId);
       return res.status(200).json({ msg: '삭제 성공' });
@@ -47,9 +47,9 @@ class CommentController {
   };
   createReComment = async (req, res, next) => {
     try {
-      const userId = res.locals;
+      const { userId } = res.locals;
       const { postid, commentid } = req.params;
-      const { content } = req.body;
+      const { content } = req.filtered;
       await this.commentService.createReComment(
         userId,
         postid,
@@ -63,7 +63,7 @@ class CommentController {
   };
   getMyComments = async (req, res, next) => {
     try {
-      const userId = res.locals;
+      const { userId } = res.locals;
       const comments = await this.commentService.getMyComments(userId);
       res.status(200).json({ comments });
     } catch (err) {

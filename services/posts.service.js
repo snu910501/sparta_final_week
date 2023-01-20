@@ -79,11 +79,21 @@ class PostService {
     return existPostContent;
   };
   //게시글 수정
-  updatePost = async (postId, title, content, userId, postImage) => {
+  updatePost = async (
+    postId,
+    title,
+    content,
+    postLocation1,
+    postLocation2,
+    userId,
+    postImage,
+  ) => {
     await updatePostValidation.validateAsync({
       postId,
       title,
       content,
+      postLocation1,
+      postLocation2,
       userId,
       postImage,
     });
@@ -91,7 +101,14 @@ class PostService {
 
     if (!post) throw badRequest('존재하지 않는 게시글');
     if (userId !== post.userId) throw forbidden('사용자정보 불일치');
-    await this.postRepository.updatePost(postId, title, content, postImage);
+    await this.postRepository.updatePost(
+      postId,
+      title,
+      content,
+      postLocation1,
+      postLocation2,
+      postImage,
+    );
     if (postImage && post.postImage) {
       const imageKey =
         post.postImage.split('/')[post.postImage.split('/').length - 1];
