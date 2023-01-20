@@ -8,7 +8,7 @@ class CommentController {
     try {
       const { userId } = res.locals;
       const postId = req.params.postid;
-      const { content } = req.body;
+      const { content } = req.filtered;
       await this.commentService.createComment(userId, postId, content);
       return res.status(200).json({ msg: '댓글 작성 성공' });
     } catch (err) {
@@ -28,7 +28,7 @@ class CommentController {
     try {
       const { userId } = res.locals;
       const commentId = req.params.commentid;
-      const { content } = req.body;
+      const { content } = req.filtered;
       await this.commentService.updateComment(userId, commentId, content);
       return res.status(200).json({ msg: '수정 성공' });
     } catch (err) {
@@ -49,7 +49,7 @@ class CommentController {
     try {
       const { userId } = res.locals;
       const { postid, commentid } = req.params;
-      const { content } = req.body;
+      const { content } = req.filtered;
       await this.commentService.createReComment(
         userId,
         postid,
