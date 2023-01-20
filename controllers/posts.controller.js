@@ -21,7 +21,7 @@ class PostController {
   createPost = async (req, res, next) => {
     try {
       const { userId } = res.locals;
-      const { title, content, postLocation1, postLocation2 } = req.body;
+      const { title, content, postLocation1, postLocation2 } = req.filtered;
       if (req.file) {
         const postImage = req.file.location;
         await this.postService.createPost(
@@ -72,7 +72,7 @@ class PostController {
     try {
       const { userId } = res.locals;
       const postId = req.params.postid;
-      const { title, content, postLocation1, postLocation2 } = req.body;
+      const { title, content, postLocation1, postLocation2 } = req.filtered;
       if (req.file) {
         const postImage = req.file.location;
         await this.postService.updatePost(
