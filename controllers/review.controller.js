@@ -27,7 +27,7 @@ class ReviewController {
         star,
       } = req.body;
       const images = req.files;
-      const userId = res.locals
+      const userId = res.locals.userId
       console.log('haha', userId);
       let review = await this.reviewService.createReview(
         address,
@@ -83,8 +83,8 @@ class ReviewController {
     try {
       const userId = res.locals
       const reviews = await this.reviewService.myReview(userId);
-      return res.status(200).json({ data: reviews })
 
+      return res.status(200).json({ data: reviews })
     } catch (err) {
       console.log('CreateController error');
       if (err.status) {
