@@ -27,9 +27,6 @@ class ReviewController {
         star,
       } = req.body;
       const images = req.files;
-      console.log('haha');
-      console.log('haha', req.files);
-      console.log('haha', res.locals.userId);
       const userId = res.locals.userId
 
       let review = await this.reviewService.createReview(

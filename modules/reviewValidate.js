@@ -48,10 +48,10 @@ module.exports = reviewValidate = async (address, address_jibun, residence_type,
     const error = new Error(405, "bug 형식이 일치하지 않습니다.")
     throw error
   }
-  if (!checkNum.test(safe) || safe > 5 || safe < 1) {
-    const error = new Error(405, "safe 형식이 일치하지 않습니다.")
-    throw error
-  }
+  // if (!checkNum.test(safe) || safe > 5 || safe < 1) {
+  //   const error = new Error(405, "safe 형식이 일치하지 않습니다.")
+  //   throw error
+  // }
   if (!checkNum.test(communication) || communication > 5 || communication < 1) {
     const error = new Error(405, "communication 형식이 일치하지 않습니다.")
     throw error
