@@ -2,7 +2,7 @@ const axios = require('axios');
 const AuthRepository = require('../repositories/auth.repository');
 const { Users } = require('../models');
 const { Refreshs } = require('../models');
-const createToken = require('../modules/jwt');
+const jwtOption = require('../modules/jwtOption');
 
 class AuthService {
   constructor() {
@@ -13,7 +13,7 @@ class AuthService {
     const config = {
       client_id: process.env.KAKAO_ID,
       grant_type: 'authorization_code',
-      redirect_uri: `https://www.ezip.store/auth/kakao/callback`,
+      redirect_uri: `http://localhost:3000/auth/kakao/callback`,
       code,
     };
 
@@ -35,7 +35,7 @@ class AuthService {
         Authorization: `Bearer ${result.access_token}`,
       },
     });
-
+    console.log(data);
     const existUser = await this.authRepository.findByUser(
       data.kakao_account.email,
     );
@@ -52,12 +52,12 @@ class AuthService {
       });
 
       const { userId, nickname, email, profileImg } = newUser;
-      accessToken = await createToken.createAccessToken(
+      accessToken = await jwtOption.createAccessToken(
         newUser.userId,
         newUser.nickname,
         newUser.profileImg,
       );
-      refreshToken = await createToken.createRefreshToken();
+      refreshToken = await jwtOption.createRefreshToken();
       await this.authRepository.createRefreshToken({
         userId: newUser.userId,
         refreshToken,
@@ -73,12 +73,12 @@ class AuthService {
     }
     if (existUser) {
       const { userId, nickname, email, profileImg } = existUser;
-      accessToken = await createToken.createAccessToken(
+      accessToken = await jwtOption.createAccessToken(
         existUser.userId,
         existUser.nickname,
         existUser.profileImg,
       );
-      refreshToken = await createToken.createRefreshToken();
+      refreshToken = await jwtOption.createRefreshToken();
       await this.authRepository.updateToken({
         userId: existUser.userId,
         refreshToken,
