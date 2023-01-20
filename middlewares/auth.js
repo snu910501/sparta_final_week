@@ -13,6 +13,7 @@ const isLoggedIn = (req, res, next) => {
 
     try {
       res.locals = jwt.verify(authToken, ACCESS_SECRET_KEY);
+      console.log('papa', res.locals);
       next();
     } catch (err) {
       next(unauthorized('토큰 유효성검사 실패'));
