@@ -28,13 +28,16 @@ class ReviewRepository {
 
   createDo = async (doName, LatLng) => {
     try {
-      console.log('doname', LatLng);
       const doExist = await DistrictDo.findOne({
         where: {
           doName: doName
         }
       })
-
+      if (doName == '서울') {
+        doName = '서울특별시';
+      } else if (doName == '경기') {
+        doName = '경기도';
+      }
       if (!doExist) {
         await DistrictDo.create({
           doName: doName,
