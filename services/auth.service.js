@@ -35,10 +35,7 @@ class AuthService {
         Authorization: `Bearer ${result.access_token}`,
       },
     });
-    console.log(data);
-    const existUser = await this.authRepository.findByUser(
-      data.kakao_account.email,
-    );
+    const existUser = await this.authRepository.findByUser(data.id);
 
     let accessToken = '';
     let refreshToken = '';
