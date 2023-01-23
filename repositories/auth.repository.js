@@ -14,8 +14,8 @@ class AuthRepository {
     return newUser;
   };
 
-  findByUser = async (email) => {
-    const userSnsId = await this.usersModel.findOne({ where: { email } });
+  findByUser = async (snsId) => {
+    const userSnsId = await this.usersModel.findOne({ where: { snsId } });
     return userSnsId;
   };
 
