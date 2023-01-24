@@ -6,7 +6,6 @@ exports.postSanitizer = (req, res, next) => {
   const postLocation1 = sanitize(req.body.postLocation1);
   const postLocation2 = sanitize(req.body.postLocation2);
   req.filtered = { title, content, postLocation1, postLocation2 };
-  console.log(req.filtered);
   next();
 };
 
