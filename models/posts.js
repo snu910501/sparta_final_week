@@ -14,6 +14,9 @@ module.exports = class Posts extends Sequelize.Model {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
+        email: {
+          type: Sequelize.STRING,
+        },
         title: {
           allowNull: false,
           type: Sequelize.STRING,
