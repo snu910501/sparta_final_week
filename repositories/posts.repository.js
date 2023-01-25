@@ -14,6 +14,7 @@ class PostRepository {
         : { postLocation1 };
     }
     const posts = await this.postsModel.findAll({
+      subQuery: false,
       where: whereLocation,
       order: [
         ['commentsCount', 'DESC'],
@@ -35,8 +36,8 @@ class PostRepository {
       ],
       include: [{ model: Comments, attributes: [] }],
       group: 'postId',
-      // limit: 21,
-      // offset: 21 * (page - 1),
+      limit: 24,
+      offset: 24 * (page - 1),
     });
     return posts;
   };
@@ -49,6 +50,7 @@ class PostRepository {
         : { postLocation1 };
     }
     const posts = await this.postsModel.findAll({
+      subQuery: false,
       where: whereLocation,
       order: [['createdAt', 'DESC']],
       attributes: [
@@ -67,8 +69,8 @@ class PostRepository {
       ],
       include: [{ model: Comments, attributes: [] }],
       group: 'postId',
-      // limit: 21,
-      // offset: 21 * (page - 1),
+      limit: 24,
+      offset: 24 * (page - 1),
     });
     return posts;
   };
@@ -90,19 +92,85 @@ class PostRepository {
         'postLocation2',
         'createdAt',
         'email',
+      ],
+    });
+    return post;
+  };
+
+  getWrotePost = async (postId) => {
+    const existPostContent = await this.postsModel.findByPk(postId);
+    return existPostContent;
+  };
+
+  getPreviousPost = async (postId) => {
+    const post = await this.postsModel.findOne({
+      where: { postId: { [Op.lt]: postId } },
+      order: [['postId', 'DESC']],
+      attributes: [
+        'userId',
+        'postId',
+        'postImage',
+        'title',
+        'content',
+        'postLocation1',
+        'postLocation2',
+        'createdAt',
+        'email',
+      ],
+    });
+    return post;
+  };
+
+  getNextPost = async (postId) => {
+    const post = await this.postsModel.findOne({
+      where: { postId: { [Op.gt]: postId } },
+      attributes: [
+        'userId',
+        'postId',
+        'postImage',
+        'title',
+        'content',
+        'postLocation1',
+        'postLocation2',
+        'createdAt',
+        'email',
+      ],
+    });
+    return post;
+  };
+
+  getSearchedPost = async (searchedWord) => {
+    const posts = await this.postsModel.findAll({
+      subQuery: false,
+      where: {
+        [Op.or]: [
+          { content: { [Op.like]: `%${searchedWord}%` } },
+          { title: { [Op.like]: `%${searchedWord}%` } },
+          { email: { [Op.like]: `%${searchedWord}%` } },
+        ],
+      },
+      order: [
+        ['commentsCount', 'DESC'],
+        ['postId', 'DESC'],
+      ],
+      attributes: [
+        'postId',
+        'postImage',
+        'title',
+        'content',
+        'postLocation1',
+        'postLocation2',
+        'createdAt',
+        'email',
         [
           Sequelize.fn('COUNT', Sequelize.col('Comments.commentId')),
           'commentsCount',
         ],
       ],
       include: [{ model: Comments, attributes: [] }],
+      group: 'postId',
     });
-    return post;
-  };
-
-  getPreviousPost = async (postId) => {
-    const existPostContent = await this.postsModel.findByPk(postId);
-    return existPostContent;
+    return posts;
   };
 
   updatePost = async (postId, postInfo) => {
