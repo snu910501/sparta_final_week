@@ -59,7 +59,6 @@ class CommentController {
       const { userId, email } = res.locals;
       const { postid: postId, commentid: commentId } = req.params;
       const { content } = req.filtered;
-      console.log(email);
       await this.commentService.createReComment({
         userId,
         email,

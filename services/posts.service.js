@@ -7,6 +7,7 @@ const {
   PreviousPostValidation,
   updatePostValidation,
   userIdValidation,
+  searchedWordValidation,
 } = require('../validations/post.validation');
 const { Posts } = require('../models');
 const s3 = require('../config/aws.post.s3');
@@ -22,13 +23,15 @@ class PostService {
     await postLocationValidation.validateAsync({
       postLocation1,
       postLocation2,
-      // page,
+      page,
     });
+
     if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
+
     const posts = await this.postRepository.getLocationPosts(
       postLocation1,
       postLocation2,
-      // page,
+      page,
     );
 
     if (posts.length === 0) throw badRequest('지역 게시물 없음');
@@ -40,13 +43,15 @@ class PostService {
     await postLocationValidation.validateAsync({
       postLocation1,
       postLocation2,
-      // page,
+      page,
     });
+
     if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
+
     const posts = await this.postRepository.getRecentPosts(
       postLocation1,
       postLocation2,
-      // page,
+      page,
     );
 
     if (posts.length === 0) throw badRequest('지역 게시물 없음');
@@ -59,7 +64,6 @@ class PostService {
       postInput,
     );
     postInfo.email = email.split('@')[0];
-    console.log(postInfo);
     await this.postRepository.createPost(postInfo);
   };
 
@@ -72,9 +76,9 @@ class PostService {
     return post;
   };
 
-  getPreviousPost = async (postId, userId) => {
+  getWrotePost = async (postId, userId) => {
     await PreviousPostValidation.validateAsync({ postId, userId });
-    const existPost = await this.postRepository.getPreviousPost(postId);
+    const existPost = await this.postRepository.getWrotePost(postId);
 
     if (!existPost) throw badRequest('존재하지 않는 게시글');
     if (userId !== existPost.userId) throw forbidden('사용자정보 불일치');
@@ -82,15 +86,54 @@ class PostService {
     return existPost;
   };
 
+  getPreviousPost = async (postId) => {
+    await postIdValidation.validateAsync(postId);
+    const existPost = await this.postRepository.getDetailPost(postId);
+
+    if (!existPost) throw badRequest('존재하지 않는 현재 게시글');
+
+    const post = await this.postRepository.getPreviousPost(postId);
+
+    if (!post) throw badRequest('존재하지 않는 이전 게시글');
+
+    return post;
+  };
+
+  getNextPost = async (postId) => {
+    await postIdValidation.validateAsync(postId);
+    const existPost = await this.postRepository.getDetailPost(postId);
+
+    if (!existPost) throw badRequest('존재하지 않는 현재 게시글');
+
+    const post = await this.postRepository.getNextPost(postId);
+
+    if (!post) throw badRequest('존재하지 않는 다음 게시글');
+
+    return post;
+  };
+
+  getSearchedPost = async (searchedWord) => {
+    console.log(searchedWord);
+    await searchedWordValidation.validateAsync(searchedWord);
+    const posts = await this.postRepository.getSearchedPost(searchedWord);
+
+    if (posts.length === 0)
+      throw badRequest('검색 조건과 일치하는 게시글 없음');
+
+    return posts;
+  };
+
   updatePost = async (postInfo) => {
     const { userId, postId, postImage, ...Info } =
       await updatePostValidation.validateAsync(postInfo);
-    const post = await this.postRepository.getPreviousPost(postId);
+    const post = await this.postRepository.getDetailPost(postId);
 
     if (!post) throw badRequest('존재하지 않는 게시글');
     if (userId !== post.userId) throw forbidden('사용자정보 불일치');
     Info.postImage = postImage;
+
     await this.postRepository.updatePost(postId, Info);
+
     if (postImage && post.postImage) {
       const imageKey =
         post.postImage.split('/')[post.postImage.split('/').length - 1];
@@ -105,7 +148,9 @@ class PostService {
 
     if (!post) throw badRequest('존재하지 않는 게시글');
     if (userId !== post.userId) throw forbidden('사용자정보 불일치');
+
     await this.postRepository.deletePost(postId);
+
     if (post.postImage) {
       const imageKey =
         post.postImage.split('/')[post.postImage.split('/').length - 1];
@@ -122,6 +167,7 @@ class PostService {
   getMyPost = async (userId) => {
     await userIdValidation.validateAsync(userId);
     const myposts = await this.postRepository.getMyPost(userId);
+
     return myposts;
   };
 }
