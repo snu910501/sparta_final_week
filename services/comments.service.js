@@ -23,7 +23,7 @@ class CommentService {
     const { postId, email, ...commentInfo } =
       await createCommentValidation.validateAsync(commentInput);
     const existPost = await this.postRepository.getDetailPost(postId);
-    if (!existPost.postId) throw badRequest('존재하지 않는 게시글');
+    if (!existPost) throw badRequest('존재하지 않는 게시글');
     commentInfo.email = email.split('@')[0];
     commentInfo.postId = postId;
     await this.commentRepsitory.createComment(commentInfo);
@@ -32,7 +32,7 @@ class CommentService {
   getComments = async (postId) => {
     await postIdValidation.validateAsync(postId);
     const existPost = await this.postRepository.getDetailPost(postId);
-    if (!existPost.postId) throw badRequest('존재하지 않는 게시글');
+    if (!existPost) throw badRequest('존재하지 않는 게시글');
 
     const comments = await this.commentRepsitory.getComments(postId);
 
@@ -76,7 +76,6 @@ class CommentService {
     commentInfo.email = email.split('@')[0];
     commentInfo.parentCommentId = parentCommentId;
     commentInfo.postId = postId;
-    console.log(commentInfo);
     await this.commentRepsitory.createReComment(commentInfo);
   };
 
