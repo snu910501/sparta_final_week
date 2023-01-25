@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const createAccessToken = async (userId, nickname) => {
+const createAccessToken = async (userId, email) => {
   const accessToken = jwt.sign(
-    { userId, nickname },
+    { userId, email },
     process.env.ACCESS_SECRET_KEY,
     {
       expiresIn: '1d',
@@ -17,7 +17,5 @@ const createRefreshToken = async () => {
   });
   return refreshToken;
 };
-
-const accessTokenVerify = async (accessToken) => {};
 
 module.exports = { createAccessToken, createRefreshToken };
