@@ -6,11 +6,13 @@ const router = express.Router();
 const EstateController = require("../controllers/review.controller");
 const estateController = new EstateController();
 
+
+
 const upload = multer({
   storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "./uploads");
-    },
+    // destination: function (req, file, cb) {
+    //   cb(null, "./uploads");
+    // },
     filename: function (req, file, cb) {
       cb(null, file.originalname);
     },

@@ -23,13 +23,6 @@ module.exports = uploadImageToS3 = async (images) => {
       .promise();
   });
 
-
-  //   fs.rmdir("uploads/", { recursive: true }, (err) => {
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //   });
-
   const result = await Promise.all(promiseList);
   result.map(v => {
     url.push({ location: v.Location, fileName: v.key })

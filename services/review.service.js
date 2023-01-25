@@ -203,6 +203,7 @@ class ReviewService {
       estateInfoArr[0][key] /= estateInfos.length;
     }
 
+    estateInfoArr = estateInfoArr[0]
     return { reviewArr, estateInfoArr, estate }
   }
 
