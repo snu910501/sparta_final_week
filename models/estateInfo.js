@@ -54,6 +54,7 @@ module.exports = class EstateInfo extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
+
       },
       {
         sequelize,

@@ -2,6 +2,8 @@ const Estate = require("../models/estate");
 const DistrictDo = require('../models/districtDo');
 const DistrictCity = require('../models/districtCity');
 const DistrictDong = require('../models/districtDong');
+const ZoomLevelFour = require("../models/zoomLevelFour");
+const ZoomLevelThree = require('../models/zoomLevelThree');
 const { Op } = require('sequelize');
 
 class MapRepository {
@@ -54,20 +56,44 @@ class MapRepository {
       throw err;
     }
   };
-  getMapZoomTwo = async (neLatLng, swLatLng) => {
+  getMapZoomTwo = async (neLatLng, swLatLng, number) => {
     try {
-      const reviews = await Estate.findAll({
-        where: {
-          lat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
-          lng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
-        },
-        attributes: [
-          "estateId",
-          "lat",
-          "lng"
-        ]
-      })
-      return reviews
+
+      if (number == 4) {
+        let reviewsArr = []
+        const reviews = await ZoomLevelFour.findAll({
+          where: {
+            swLat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
+            swLng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
+          },
+          attributes: [
+            'estateId',
+            'swLat',
+            'swLng',
+          ]
+        })
+        for (let i = 0; i < reviews.length; i++) {
+          reviewsArr.push(reviews[i].dataValues);
+        }
+        return reviewsArr
+      } else {
+        let reviewsArr = []
+        const reviews = await ZoomLevelThree.findAll({
+          where: {
+            swLat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
+            swLng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
+          },
+          attributes: [
+            'estateId',
+            'swLat',
+            'swLng',
+          ]
+        })
+        for (let i = 0; i < reviews.length; i++) {
+          reviewsArr.push(reviews[i].dataValues);
+        }
+        return reviewsArr
+      }
     } catch (err) {
       console.log('mapRepository getMapZoomTwo Error', err);
       throw err;

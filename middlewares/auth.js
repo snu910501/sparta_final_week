@@ -5,7 +5,6 @@ const { unauthorized, badRequest } = require('@hapi/boom');
 const isLoggedIn = (req, res, next) => {
   try {
     const { authorization } = req.headers;
-    console.log('hihi', authorization);
     if (!authorization) throw unauthorized('로그인 필요');
 
     const [authType, authToken] = authorization.split(' ');
@@ -13,7 +12,6 @@ const isLoggedIn = (req, res, next) => {
 
     try {
       res.locals = jwt.verify(authToken, ACCESS_SECRET_KEY);
-      console.log('papa', res.locals);
       next();
     } catch (err) {
       next(unauthorized('토큰 유효성검사 실패'));

@@ -3,6 +3,7 @@ const reviewValidate = require('../modules/reviewValidate');
 const imagesValidate = require('../modules/imagesValidate');
 const administrativeDistrict = require("../static/administrativeDistrict");
 const addressToGeO = require('../modules/addressToGeo');
+const clustering = require("../modules/clustering");
 const uploadImageToS3 = require('../modules/uploadImageToS3');
 const ReviewImage = require('../models/reviewImage');
 
@@ -32,7 +33,6 @@ class ReviewService {
     images,
     userId
   ) => {
-    console.log('papa', userId)
     try {
       // 리뷰 요소에 대한 유효성 검사
       await reviewValidate(
@@ -111,7 +111,7 @@ class ReviewService {
       } else {
 
         // 생성된 건물이 없다면 건물을 생성해서 estateId 값을 넘긴다.
-        let estate = await this.reviewRepository.createEstate(address, address_jibun, await addressToGeO(address));
+        let estate = await this.reviewRepository.createEstate(address, address_jibun, await clustering(address));
         let review = await this.reviewRepository.createReview(
           estate.estateId,
           // nickname,

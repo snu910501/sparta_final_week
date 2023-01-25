@@ -5,6 +5,8 @@ const DistrictDo = require("../models/districtDo");
 const DistrictCity = require('../models/districtCity');
 const DistrictDong = require('../models/districtDong');
 const ReviewImage = require('../models/reviewImage');
+const ZoomLevelFour = require("../models/zoomLevelFour");
+const ZoomLevelThree = require('../models/zoomLevelThree');
 
 const error = require('../modules/error');
 
@@ -116,6 +118,23 @@ class ReviewRepository {
         lat: latLng.lat,
         lng: latLng.lng
       });
+
+      await ZoomLevelThree.create({
+        estateId: estate.estateId,
+        swLat: latLng.zoomLevelThreeSwLat,
+        swLng: latLng.zoomLevelThreeSwLng,
+        neLat: latLng.zoomLevelThreeNeLat,
+        neLng: latLng.zoomLevelThreeNeLng,
+      })
+
+      await ZoomLevelFour.create({
+        estateId: estate.estateId,
+        swLat: latLng.zoomLevelFourSwLat,
+        swLng: latLng.zoomLevelFourSwLng,
+        neLat: latLng.zoomLevelFourNeLat,
+        neLng: latLng.zoomLevelFourNeLng,
+      })
+
       return estate;
     } catch (err) {
       console.log('ReviewRepository CreateEstate Error', err);

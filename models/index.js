@@ -12,6 +12,8 @@ const DistrictDo = require("./districtDo");
 const DistrictCity = require("./districtCity");
 const DistrictDong = require("./districtDong");
 const ReviewImage = require("./reviewImage");
+const ZoomLevelFour = require('./zoomLevelFour');
+const ZoomLevelThree = require('./zoomLevelThree');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config')[env];
@@ -37,6 +39,8 @@ db.Users = Users;
 db.Posts = Posts;
 db.Comments = Comments;
 db.Refreshs = Refreshs;
+db.ZoomLevelFour = ZoomLevelFour;
+db.ZoomLevelThree = ZoomLevelThree
 
 Users.init(sequelize);
 Posts.init(sequelize);
@@ -50,6 +54,8 @@ DistrictDo.init(sequelize);
 DistrictCity.init(sequelize);
 DistrictDong.init(sequelize);
 ReviewImage.init(sequelize);
+ZoomLevelFour.init(sequelize);
+ZoomLevelThree.init(sequelize);
 
 Users.associate(db);
 Posts.associate(db);
