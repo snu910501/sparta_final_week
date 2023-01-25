@@ -4,12 +4,10 @@ class AuthRepository {
     this.refreshsModel = RefreshsModel;
   }
 
-  createUser = async ({ snsId, nickname, email, profileImg }) => {
+  createUser = async (snsId, email) => {
     const newUser = await this.usersModel.create({
       snsId,
-      nickname,
       email,
-      profileImg,
     });
     return newUser;
   };
