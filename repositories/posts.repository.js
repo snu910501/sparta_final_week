@@ -82,17 +82,6 @@ class PostRepository {
   getDetailPost = async (postId) => {
     const post = await this.postsModel.findOne({
       where: { postId },
-      attributes: [
-        'userId',
-        'postId',
-        'postImage',
-        'title',
-        'content',
-        'postLocation1',
-        'postLocation2',
-        'createdAt',
-        'email',
-      ],
     });
     return post;
   };
@@ -106,17 +95,6 @@ class PostRepository {
     const post = await this.postsModel.findOne({
       where: { postId: { [Op.lt]: postId } },
       order: [['postId', 'DESC']],
-      attributes: [
-        'userId',
-        'postId',
-        'postImage',
-        'title',
-        'content',
-        'postLocation1',
-        'postLocation2',
-        'createdAt',
-        'email',
-      ],
     });
     return post;
   };
@@ -124,17 +102,6 @@ class PostRepository {
   getNextPost = async (postId) => {
     const post = await this.postsModel.findOne({
       where: { postId: { [Op.gt]: postId } },
-      attributes: [
-        'userId',
-        'postId',
-        'postImage',
-        'title',
-        'content',
-        'postLocation1',
-        'postLocation2',
-        'createdAt',
-        'email',
-      ],
     });
     return post;
   };
