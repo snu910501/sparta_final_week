@@ -63,13 +63,13 @@ class MapRepository {
         let reviewsArr = []
         const reviews = await ZoomLevelFour.findAll({
           where: {
-            swLat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
-            swLng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
+            lat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
+            lng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
           },
           attributes: [
             'estateId',
-            'swLat',
-            'swLng',
+            'lat',
+            'lng',
           ]
         })
         for (let i = 0; i < reviews.length; i++) {
@@ -80,13 +80,13 @@ class MapRepository {
         let reviewsArr = []
         const reviews = await ZoomLevelThree.findAll({
           where: {
-            swLat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
-            swLng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
+            lat: { [Op.between]: [swLatLng.lat, neLatLng.lat] },
+            lng: { [Op.between]: [swLatLng.lng, neLatLng.lng] }
           },
           attributes: [
             'estateId',
-            'swLat',
-            'swLng',
+            'lat',
+            'lng',
           ]
         })
         for (let i = 0; i < reviews.length; i++) {

@@ -121,18 +121,14 @@ class ReviewRepository {
 
       await ZoomLevelThree.create({
         estateId: estate.estateId,
-        swLat: latLng.zoomLevelThreeSwLat,
-        swLng: latLng.zoomLevelThreeSwLng,
-        neLat: latLng.zoomLevelThreeNeLat,
-        neLng: latLng.zoomLevelThreeNeLng,
+        lat: latLng.zoomLevelThreeSwLat,
+        lng: latLng.zoomLevelThreeSwLng,
       })
 
       await ZoomLevelFour.create({
         estateId: estate.estateId,
-        swLat: latLng.zoomLevelFourSwLat,
-        swLng: latLng.zoomLevelFourSwLng,
-        neLat: latLng.zoomLevelFourNeLat,
-        neLng: latLng.zoomLevelFourNeLng,
+        lat: latLng.zoomLevelFourSwLat,
+        lng: latLng.zoomLevelFourSwLng,
       })
 
       return estate;

@@ -33,7 +33,7 @@ class MapService {
 
               } else {
                 for (let a = 0; a < arr.length; a++) {
-                  if (arr[a][0].swLat == reviews[i].swLat && arr[a][0].swLng == reviews[i].swLng) {
+                  if (arr[a][0].lat == reviews[i].lat && arr[a][0].lng == reviews[i].lng) {
                     arr[a].push(reviews[i]);
                   } else {
                     num++;
@@ -62,7 +62,7 @@ class MapService {
 
               } else {
                 for (let a = 0; a < arr.length; a++) {
-                  if (arr[a][0].swLat == reviews[i].swLat && arr[a][0].swLng == reviews[i].swLng) {
+                  if (arr[a][0].lat == reviews[i].lat && arr[a][0].lng == reviews[i].lng) {
                     arr[a].push(reviews[i]);
                   } else {
                     num++;

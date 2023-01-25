@@ -14,20 +14,20 @@ module.exports = class ZoomLevelThree extends Sequelize.Model {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
-        swLat: {
+        lat: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        swLng: {
+        lng: {
           allowNull: false,
           type: Sequelize.STRING,
         },
         neLat: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.STRING,
         },
         neLng: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.STRING,
         },
       },
