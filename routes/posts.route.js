@@ -23,6 +23,9 @@ postRouter.post(
 //지역 게시글 댓글 순 조회
 postRouter.get('', getApiLimiter, postController.getLocationPosts);
 
+//지역 게시글 최신 수 조회
+postRouter.get('/recent', getApiLimiter, postController.getRecentPosts);
+
 //내가 작성한 게시글 조회
 postRouter.get('/me', isLoggedIn, getApiLimiter, postController.getMyPost);
 

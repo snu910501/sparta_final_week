@@ -2,7 +2,7 @@ const rateLimite = require('express-rate-limit');
 
 exports.postCUDApiLimiter = rateLimite({
   windowMs: 60 * 1000,
-  max: 5,
+  max: 10,
   handler(req, res, next, option) {
     res.status(option.statusCode).json({ errorMsg: '요청 많음' });
   },
@@ -17,8 +17,8 @@ exports.getApiLimiter = rateLimite({
 });
 
 exports.commentCUDApiLimiter = rateLimite({
-  windowMs: 20 * 1000,
-  max: 5,
+  windowMs: 30 * 1000,
+  max: 10,
   handler(req, res, next, option) {
     res.status(option.statusCode).json({ errorMsg: '요청 많음' });
   },

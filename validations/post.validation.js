@@ -1,16 +1,25 @@
 const joi = require('joi');
+const { postLocation1, postLocation2 } = require('../static/postLocation');
 
 const postLocationValidation = joi.object().keys({
   postLocation1: joi.string().allow('').not('undefined'),
   postLocation2: joi.string().allow('').not('undefined'),
+  page: joi.number(),
 });
 
 const createPostValidation = joi.object().keys({
   title: joi.string().trim().required().min(1).max(50).not(''),
   content: joi.string().trim().required().min(1).max(10000).not(''),
-  postLocation1: joi.string().trim().required().not('undefined').not(''),
-  postLocation2: joi.string().trim().required().not('undefined').not(''),
+  postLocation1: joi
+    .string()
+    .required()
+    .valid(...postLocation1),
+  postLocation2: joi
+    .string()
+    .required()
+    .valid(...postLocation2),
   userId: joi.number().required(),
+  email: joi.string().required(),
   postImage: joi.string(),
 });
 
@@ -25,8 +34,14 @@ const updatePostValidation = joi.object().keys({
   postId: joi.number().required(),
   title: joi.string().trim().required().min(1).max(50).not(''),
   content: joi.string().trim().required().min(1).max(10000).not(''),
-  postLocation1: joi.string().trim().required().not('undefined').not(''),
-  postLocation2: joi.string().trim().required().not('undefined').not(''),
+  postLocation1: joi
+    .string()
+    .required()
+    .valid(...postLocation1),
+  postLocation2: joi
+    .string()
+    .required()
+    .valid(...postLocation2),
   userId: joi.number().required(),
   postImage: joi.string(),
 });
