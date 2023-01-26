@@ -7,7 +7,6 @@ const {
   PreviousPostValidation,
   updatePostValidation,
   userIdValidation,
-  searchedWordValidation,
 } = require('../validations/post.validation');
 const { Posts } = require('../models');
 const s3 = require('../config/aws.post.s3');
@@ -19,43 +18,37 @@ class PostService {
     this.postS3Repository = new PostS3Repository(s3);
   }
 
-  getLocationPosts = async (postLocation1, postLocation2, page) => {
+  getLocationPosts = async (getPostInfo) => {
     let pageNum = 0;
-    await postLocationValidation.validateAsync({
-      postLocation1,
-      postLocation2,
-      page,
-    });
+    let order = [
+      ['commentsCount', 'DESC'],
+      ['createdAt', 'DESC'],
+    ];
+    let searchWord = '';
+
+    const { postLocation1, postLocation2, page, type, search } =
+      await postLocationValidation.validateAsync(getPostInfo);
 
     if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
+
     if (!page) pageNum = 1;
     else pageNum = page;
+
+    if (search) searchWord = search;
+
+    if (type === 'recent') order = [['createdAt', 'DESC']];
+    if (type === 'trend')
+      order = [
+        ['commentsCount', 'DESC'],
+        ['createdAt', 'DESC'],
+      ];
 
     const posts = await this.postRepository.getLocationPosts(
       postLocation1,
       postLocation2,
       pageNum,
-    );
-
-    return posts;
-  };
-
-  getRecentPosts = async (postLocation1, postLocation2, page) => {
-    let pageNum = 0;
-    await postLocationValidation.validateAsync({
-      postLocation1,
-      postLocation2,
-      page,
-    });
-
-    if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
-    if (!page) pageNum = 1;
-    else pageNum = page;
-
-    const posts = await this.postRepository.getRecentPosts(
-      postLocation1,
-      postLocation2,
-      pageNum,
+      order,
+      searchWord,
     );
 
     return posts;
@@ -112,17 +105,6 @@ class PostService {
     if (!post) throw badRequest('존재하지 않는 다음 게시글');
 
     return post;
-  };
-
-  getSearchedPost = async (searchedWord) => {
-    console.log(searchedWord);
-    await searchedWordValidation.validateAsync(searchedWord);
-    const posts = await this.postRepository.getSearchedPost(searchedWord);
-
-    if (posts.length === 0)
-      throw badRequest('검색 조건과 일치하는 게시글 없음');
-
-    return posts;
   };
 
   updatePost = async (postInfo) => {
