@@ -20,6 +20,7 @@ class PostService {
   }
 
   getLocationPosts = async (postLocation1, postLocation2, page) => {
+    let pageNum = 0;
     await postLocationValidation.validateAsync({
       postLocation1,
       postLocation2,
@@ -27,19 +28,20 @@ class PostService {
     });
 
     if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
+    if (!page) pageNum = 1;
+    else pageNum = page;
 
     const posts = await this.postRepository.getLocationPosts(
       postLocation1,
       postLocation2,
-      page,
+      pageNum,
     );
-
-    if (posts.length === 0) throw badRequest('지역 게시물 없음');
 
     return posts;
   };
 
   getRecentPosts = async (postLocation1, postLocation2, page) => {
+    let pageNum = 0;
     await postLocationValidation.validateAsync({
       postLocation1,
       postLocation2,
@@ -47,14 +49,14 @@ class PostService {
     });
 
     if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
+    if (!page) pageNum = 1;
+    else pageNum = page;
 
     const posts = await this.postRepository.getRecentPosts(
       postLocation1,
       postLocation2,
-      page,
+      pageNum,
     );
-
-    if (posts.length === 0) throw badRequest('지역 게시물 없음');
 
     return posts;
   };
