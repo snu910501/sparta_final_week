@@ -41,50 +41,36 @@ class AuthService {
     let refreshToken = '';
 
     if (!existUser) {
-      const newUser = await this.authRepository.createUser({
-        snsId: data.id,
-        nickname: data.properties.nickname,
-        email: data.kakao_account.email,
-        profileImg: data.properties.profile_image,
-      });
-
-      const { userId, nickname, email, profileImg } = newUser;
-      accessToken = await jwtOption.createAccessToken(
-        newUser.userId,
-        newUser.nickname,
-        newUser.profileImg,
+      const newUser = await this.authRepository.createUser(
+        data.id,
+        data.kakao_account.email,
       );
+
+      const { userId, email } = newUser;
+      accessToken = await jwtOption.createAccessToken(userId, email);
       refreshToken = await jwtOption.createRefreshToken();
       await this.authRepository.createRefreshToken({
-        userId: newUser.userId,
+        userId,
         refreshToken,
       });
       return {
         userId,
-        nickname,
         email,
-        profileImg,
         accessToken,
         refreshToken,
       };
     }
     if (existUser) {
-      const { userId, nickname, email, profileImg } = existUser;
-      accessToken = await jwtOption.createAccessToken(
-        existUser.userId,
-        existUser.nickname,
-        existUser.profileImg,
-      );
+      const { userId, email } = existUser;
+      accessToken = await jwtOption.createAccessToken(userId, email);
       refreshToken = await jwtOption.createRefreshToken();
       await this.authRepository.updateToken({
-        userId: existUser.userId,
+        userId,
         refreshToken,
       });
       return {
         userId,
-        nickname,
         email,
-        profileImg,
         accessToken,
         refreshToken,
       };

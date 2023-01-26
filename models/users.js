@@ -18,14 +18,6 @@ module.exports = class Users extends Sequelize.Model {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        nickname: {
-          allowNull: true,
-          type: Sequelize.STRING,
-        },
-        profileImg: {
-          allowNull: true,
-          type: Sequelize.STRING,
-        },
       },
       {
         sequelize,
@@ -48,12 +40,6 @@ module.exports = class Users extends Sequelize.Model {
       onUpdate: 'cascade',
     });
     db.Users.hasMany(db.Comments, {
-      foreignKey: 'userId',
-      sourceKey: 'userId',
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    });
-    db.Users.hasMany(db.Refreshs, {
       foreignKey: 'userId',
       sourceKey: 'userId',
       onDelete: 'cascade',
