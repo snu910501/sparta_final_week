@@ -4,7 +4,7 @@ const { postLocation1, postLocation2 } = require('../static/postLocation');
 const postLocationValidation = joi.object().keys({
   postLocation1: joi.string().allow('').not('undefined'),
   postLocation2: joi.string().allow('').not('undefined'),
-  page: joi.number().not('NaN'),
+  page: joi.number().not('NaN').allow(''),
 });
 
 const createPostValidation = joi.object().keys({
