@@ -94,6 +94,23 @@ class ReviewController {
       }
     }
   }
+
+  deleteReview = async (req, res) => {
+    try {
+      
+      const reviewId = res.params.reviewId;
+      const userId = res.locals.userId;
+      const result = await this.reviewService.deleteReview(reviewId, userId);
+      return res.status(200).json(result);
+    } catch (err) {
+      console.log('CreateController deleteReview error', err);
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage });
+      } else {
+        return res.status(500).json({ errorMessage: 'error' });
+      }
+    }
+  }
 }
 
 

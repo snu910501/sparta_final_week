@@ -25,6 +25,8 @@ let zoomLevelFourNeLng = 0;
 
 // for문을 이진트리로바궈서 속도를 높여보자
 
+console.time()
+
 for (let i = koreaSwLat; i < koreaNeLat; i += zoomLevelThreeLat) {
   if (lat >= i && lat <= zoomLevelThreeLat + i) {
     zoomLevelThreeSwLat = i;
@@ -41,19 +43,26 @@ for (let i = koreaSwLng; i < koreaNeLng; i += zoomLevelThreeLng) {
     break
   }
 }
-for (let i = koreaSwLat; i < koreaNeLat; i += zoomLevelFourLat) {
-  if (lat >= i && lat <= zoomLevelFourLat + i) {
-    zoomLevelFourSwLat = i;
-    zoomLevelFourNeLat = zoomLevelFourLat + i;
-    break
-  }
-}
+
+console.timeEnd()
+
+///////////////////////////////////
+
+// console.time()
+
+// const low = koreaSwLat;
+// const high = koreaNeLat;
+// const mid = Math.floor((low + high) / 2)
 
 
-for (let i = koreaSwLng; i < koreaNeLng; i += zoomLevelFourLng) {
-  if (lng >= i && lng <= zoomLevelFourLng + i) {
-    zoomLevelFourSwLng = i;
-    zoomLevelFourNeLng = zoomLevelFourLng + i;
-    break
-  }
-}
+// console.time()
+
+// while (lat >= mid && lat <= mid + zoomLevelThreeLat) {
+//   if (lat < mid) {
+//     high = mid - zoomLevelThreeLat;
+//   } else {
+//     high = mid + zoomLevelFourLat;
+//   }
+// }
+
+// console.timeEnd();
