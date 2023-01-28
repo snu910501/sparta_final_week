@@ -27,6 +27,7 @@ class ReviewController {
         star,
       } = req.body;
       const images = req.files;
+      const userId = res.locals.userId
 
       let review = await this.reviewService.createReview(
         address,
@@ -49,10 +50,11 @@ class ReviewController {
         bad,
         star,
         images,
+        userId
       );
       return res.status(200).json({ result: true });
     } catch (err) {
-      console.log('CreateController error');
+      console.log('CreateController error', err);
       if (err.status) {
         return res.status(err.status).json({ errorMessage: err.errorMessage });
       } else {
@@ -79,12 +81,12 @@ class ReviewController {
 
   myReview = async (req, res) => {
     try {
-      const userId = req.params.userId
-
+      const userId = res.locals.userId
       const reviews = await this.reviewService.myReview(userId);
+
       return res.status(200).json({ data: reviews })
     } catch (err) {
-      console.log('CreateController error');
+      console.log('CreateController error', err);
       if (err.status) {
         return res.status(err.status).json({ errorMessage: err.errorMessage });
       } else {
