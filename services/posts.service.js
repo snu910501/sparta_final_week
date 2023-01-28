@@ -10,6 +10,7 @@ const {
 } = require('../validations/post.validation');
 const { Posts } = require('../models');
 const s3 = require('../config/aws.post.s3');
+const { Op } = require('sequelize');
 const { badRequest, forbidden } = require('@hapi/boom');
 
 class PostService {
@@ -19,23 +20,33 @@ class PostService {
   }
 
   getLocationPosts = async (getPostInfo) => {
-    let pageNum = 0;
+    let pageNum = 1;
     let order = [
       ['commentsCount', 'DESC'],
       ['createdAt', 'DESC'],
     ];
-    let searchWord = '';
 
     const { postLocation1, postLocation2, page, type, search } =
       await postLocationValidation.validateAsync(getPostInfo);
 
     if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
 
-    if (!page) pageNum = 1;
-    else pageNum = page;
+    const searchObject = {
+      [Op.or]: [
+        { content: { [Op.like]: `%${search}%` } },
+        { title: { [Op.like]: `%${search}%` } },
+        { email: { [Op.like]: `%${search}%` } },
+      ],
+    };
 
-    if (search) searchWord = search;
+    let whereLocation = {};
 
+    if (postLocation1) {
+      whereLocation = postLocation2
+        ? { [Op.and]: [{ postLocation1 }, { postLocation2 }, searchObject] }
+        : { [Op.and]: [{ postLocation1 }, searchObject] };
+    } else whereLocation = searchObject;
+    if (page) pageNum = page;
     if (type === 'recent') order = [['createdAt', 'DESC']];
     if (type === 'trend')
       order = [
@@ -44,13 +55,10 @@ class PostService {
       ];
 
     const posts = await this.postRepository.getLocationPosts(
-      postLocation1,
-      postLocation2,
+      whereLocation,
       pageNum,
       order,
-      searchWord,
     );
-
     return posts;
   };
 
@@ -68,6 +76,19 @@ class PostService {
 
     if (!post.postId) throw badRequest('존재하지 않는 게시글');
 
+    const previoustPost = await this.postRepository.getPreviousPost(postId);
+    const nextPost = await this.postRepository.getNextPost(postId);
+
+    if (previoustPost) {
+      post.dataValues.previoustPostId = previoustPost.dataValues.postId;
+      post.dataValues.previoustPostTitle = previoustPost.dataValues.title;
+    }
+
+    if (nextPost) {
+      post.dataValues.nextPostId = nextPost.dataValues.postId;
+      post.dataValues.nextPostTitle = nextPost.dataValues.title;
+    }
+
     return post;
   };
 
@@ -79,32 +100,6 @@ class PostService {
     if (userId !== existPost.userId) throw forbidden('사용자정보 불일치');
 
     return existPost;
-  };
-
-  getPreviousPost = async (postId) => {
-    await postIdValidation.validateAsync(postId);
-    const existPost = await this.postRepository.getDetailPost(postId);
-
-    if (!existPost) throw badRequest('존재하지 않는 현재 게시글');
-
-    const post = await this.postRepository.getPreviousPost(postId);
-
-    if (!post) throw badRequest('존재하지 않는 이전 게시글');
-
-    return post;
-  };
-
-  getNextPost = async (postId) => {
-    await postIdValidation.validateAsync(postId);
-    const existPost = await this.postRepository.getDetailPost(postId);
-
-    if (!existPost) throw badRequest('존재하지 않는 현재 게시글');
-
-    const post = await this.postRepository.getNextPost(postId);
-
-    if (!post) throw badRequest('존재하지 않는 다음 게시글');
-
-    return post;
   };
 
   updatePost = async (postInfo) => {

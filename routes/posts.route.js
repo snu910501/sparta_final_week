@@ -29,16 +29,6 @@ postRouter.get('/me', isLoggedIn, getApiLimiter, postController.getMyPost);
 //특정 게시글 상세 조회
 postRouter.get('/:postid', getApiLimiter, postController.getDetailPost);
 
-//이전 게시글 상세 조회
-postRouter.get(
-  '/:postid/previous',
-  getApiLimiter,
-  postController.getPreviousPost,
-);
-
-//다음 게시글 상세 조회
-postRouter.get('/:postid/next', getApiLimiter, postController.getNextPost);
-
 //수정전 게시글 내용 조회
 postRouter.get(
   '/update/:postid',
