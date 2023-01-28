@@ -6,28 +6,7 @@ class PostRepository {
     this.postsModel = postsModel;
   }
 
-  getLocationPosts = async (
-    postLocation1,
-    postLocation2,
-    page,
-    order,
-    word,
-  ) => {
-    let whereLocation = {};
-    const searchObject = {
-      [Op.or]: [
-        { content: { [Op.like]: `%${word}%` } },
-        { title: { [Op.like]: `%${word}%` } },
-        { email: { [Op.like]: `%${word}%` } },
-      ],
-    };
-
-    if (postLocation1) {
-      whereLocation = postLocation2
-        ? { [Op.and]: [{ postLocation1 }, { postLocation2 }, searchObject] }
-        : { [Op.and]: [{ postLocation1 }, searchObject] };
-    } else whereLocation = searchObject;
-
+  getLocationPosts = async (whereLocation, page, order) => {
     const posts = await this.postsModel.findAll({
       subQuery: false,
       where: whereLocation,
@@ -48,8 +27,8 @@ class PostRepository {
       ],
       include: [{ model: Comments, attributes: [] }],
       group: 'postId',
-      limit: 24,
-      offset: 24 * (page - 1),
+      // limit: 24,
+      // offset: 24 * (page - 1),
     });
     return posts;
   };
@@ -71,18 +50,20 @@ class PostRepository {
   };
 
   getPreviousPost = async (postId) => {
-    const post = await this.postsModel.findOne({
+    const previoustPost = await this.postsModel.findOne({
       where: { postId: { [Op.lt]: postId } },
       order: [['postId', 'DESC']],
+      attributes: ['postId', 'title'],
     });
-    return post;
+    return previoustPost;
   };
 
   getNextPost = async (postId) => {
-    const post = await this.postsModel.findOne({
+    const nextPost = await this.postsModel.findOne({
       where: { postId: { [Op.gt]: postId } },
+      attributes: ['postId', 'title'],
     });
-    return post;
+    return nextPost;
   };
 
   updatePost = async (postId, postInfo) => {

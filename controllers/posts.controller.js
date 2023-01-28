@@ -73,26 +73,6 @@ class PostController {
     }
   };
 
-  getPreviousPost = async (req, res, next) => {
-    try {
-      const postId = req.params.postid;
-      const post = await this.postService.getPreviousPost(postId);
-      res.status(200).json({ post });
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  getNextPost = async (req, res, next) => {
-    try {
-      const postId = req.params.postid;
-      const post = await this.postService.getNextPost(postId);
-      res.status(200).json({ post });
-    } catch (err) {
-      next(err);
-    }
-  };
-
   updatePost = async (req, res, next) => {
     try {
       const { userId } = res.locals;
