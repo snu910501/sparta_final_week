@@ -78,7 +78,7 @@ class PostRepository {
     const myposts = await this.postsModel.findAll({
       where: { userId },
       order: [['createdAt', 'DESC']],
-      attributes: ['title', 'content', 'createdAt'],
+      attributes: ['postId', 'title', 'content', 'createdAt'],
     });
     return myposts;
   };
