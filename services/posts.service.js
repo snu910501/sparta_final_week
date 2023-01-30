@@ -123,7 +123,7 @@ class PostService {
   deletePost = async (postId, userId) => {
     await PreviousPostValidation.validateAsync({ postId, userId });
 
-    const post = await this.postRepository.getPreviousPost(postId);
+    const post = await this.postRepository.getDetailPost(postId);
 
     if (!post) throw badRequest('존재하지 않는 게시글');
     if (userId !== post.userId) throw forbidden('사용자정보 불일치');
