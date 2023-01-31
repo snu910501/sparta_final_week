@@ -12,7 +12,7 @@ module.exports = class Refreshs extends Sequelize.Model {
         },
         userId: {
           allowNull: false,
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
         },
         refreshToken: {
           allowNull: true,

@@ -253,6 +253,7 @@ class ReviewRepository {
           'star',
           'createdAt',
           'estateId',
+          'reviewId'
         ]
       })
 

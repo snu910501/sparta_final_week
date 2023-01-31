@@ -24,6 +24,7 @@ const upload = multer({
 
 router.post('/', isLoggedIn, upload.array('images', 5), estateController.createReview)
 router.get('/items/:estateId', estateController.getReview)
-router.get('/myReview', isLoggedIn, estateController.myReview)
+router.get('/myReview', isLoggedIn, estateController.myReview);
+router.delete('/:reviewId', isLoggedIn, estateController.deleteReview);
 
 module.exports = router;

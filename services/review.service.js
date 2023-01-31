@@ -6,6 +6,7 @@ const addressToGeO = require('../modules/addressToGeo');
 const clustering = require("../modules/clustering");
 const uploadImageToS3 = require('../modules/uploadImageToS3');
 const ReviewImage = require('../models/reviewImage');
+const Error = require('../modules/error');
 
 class ReviewService {
   reviewRepository = new ReviewRepository();
@@ -212,6 +213,27 @@ class ReviewService {
       const reviews = await this.reviewRepository.myReview(userId);
       return reviews;
     } catch (err) {
+      throw err;
+    }
+  }
+
+  deleteReview = async(reviewId, userId) => {
+    try{
+      const review =  await this.reviewRepository.findReview(reviewId);
+
+      if(review) {
+        if(review.userId == userId ) {
+          await this.reviewRepository.deleteReview(reviewId);
+          return {message : '삭제 성공'};
+        } else {
+          const error = new Error('405', '자신의 후기만 삭제가 가능합니다.')
+          throw error;
+        }
+      } else {
+        const error = new Error('405', '후기가 존재하지 않습니다.')
+        throw error;
+      }
+    } catch(err) {
       throw err;
     }
   }
