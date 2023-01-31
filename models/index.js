@@ -6,12 +6,12 @@ const Comments = require('./comments');
 const Refreshs = require('./refresh');
 const Estate = require('./estate');
 const EstateInfo = require('./estateInfo');
-const Review = require("./review");
+const Review = require('./review');
 const Word = require('./word');
-const DistrictDo = require("./districtDo");
-const DistrictCity = require("./districtCity");
-const DistrictDong = require("./districtDong");
-const ReviewImage = require("./reviewImage");
+const DistrictDo = require('./districtDo');
+const DistrictCity = require('./districtCity');
+const DistrictDong = require('./districtDong');
+const ReviewImage = require('./reviewImage');
 const ZoomLevelFour = require('./zoomLevelFour');
 const ZoomLevelThree = require('./zoomLevelThree');
 
@@ -40,7 +40,7 @@ db.Posts = Posts;
 db.Comments = Comments;
 db.Refreshs = Refreshs;
 db.ZoomLevelFour = ZoomLevelFour;
-db.ZoomLevelThree = ZoomLevelThree
+db.ZoomLevelThree = ZoomLevelThree;
 
 Users.init(sequelize);
 Posts.init(sequelize);
