@@ -6,12 +6,12 @@ const Comments = require('./comments');
 const Refreshs = require('./refresh');
 const Estate = require('./estate');
 const EstateInfo = require('./estateInfo');
-const Review = require("./review");
+const Review = require('./review');
 const Word = require('./word');
-const DistrictDo = require("./districtDo");
-const DistrictCity = require("./districtCity");
-const DistrictDong = require("./districtDong");
-const ReviewImage = require("./reviewImage");
+const DistrictDo = require('./districtDo');
+const DistrictCity = require('./districtCity');
+const DistrictDong = require('./districtDong');
+const ReviewImage = require('./reviewImage');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config')[env];

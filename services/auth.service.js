@@ -1,15 +1,19 @@
 const axios = require('axios');
 const AuthRepository = require('../repositories/auth.repository');
-const { Users } = require('../models');
-const { Refreshs } = require('../models');
+const RefreshsRepository = require('../repositories/refresh.repository');
+const { Users, Refreshs } = require('../models');
 const jwtOption = require('../modules/jwtOption');
+const { badRequest } = require('@hapi/boom');
+const SALT = parseInt(process.env.SALT);
 
 class AuthService {
-  constructor() {
-    this.authRepository = new AuthRepository(Users, Refreshs);
+  constructor(bcryptMudule) {
+    this.bcrypt = bcryptMudule;
   }
+  authRepository = new AuthRepository(Users, Refreshs);
+  refreshsRepository = new RefreshsRepository(Users, Refreshs);
 
-  kakaoLogin = async (code) => {
+  kakaoLogin = async (code, userkey) => {
     const config = {
       client_id: process.env.KAKAO_ID,
       grant_type: 'authorization_code',
@@ -39,6 +43,7 @@ class AuthService {
 
     let accessToken = '';
     let refreshToken = '';
+    let newUserKey = '';
 
     if (!existUser) {
       const newUser = await this.authRepository.createUser(
@@ -48,31 +53,36 @@ class AuthService {
 
       const { userId, email } = newUser;
       accessToken = await jwtOption.createAccessToken(userId, email);
+      newUserKey = await this.bcrypt.hash(toString(userId), SALT);
+
       refreshToken = await jwtOption.createRefreshToken();
-      await this.authRepository.createRefreshToken({
-        userId,
-        refreshToken,
-      });
+      await this.refreshsRepository.createRefresh(newUserKey, refreshToken);
+
       return {
         userId,
         email,
         accessToken,
-        refreshToken,
+        userkey: newUserKey,
       };
     }
+
     if (existUser) {
       const { userId, email } = existUser;
       accessToken = await jwtOption.createAccessToken(userId, email);
+      newUserKey = await this.bcrypt.hash(toString(userId), SALT);
+
+      const isUser = await this.refreshsRepository.findByUserKey(userkey);
+      if (!isUser) throw badRequest('비정상 접근');
+      else await this.refreshsRepository.deleteRefresh(userkey);
+
       refreshToken = await jwtOption.createRefreshToken();
-      await this.authRepository.updateToken({
-        userId,
-        refreshToken,
-      });
+      await this.refreshsRepository.createRefresh(newUserKey, refreshToken);
+
       return {
         userId,
         email,
         accessToken,
-        refreshToken,
+        userkey: newUserKey,
       };
     }
   };
