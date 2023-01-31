@@ -10,6 +10,8 @@ class RefreshController {
     try {
       const { accessToken, userkey } = req.cookies;
 
+      console.log(accessToken, userkey);
+
       const result = await this.refreshService.checkToken(accessToken, userkey);
 
       if (result) {
