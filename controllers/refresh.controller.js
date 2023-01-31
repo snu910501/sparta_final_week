@@ -9,7 +9,6 @@ class RefreshController {
   checkToken = async (req, res, next) => {
     try {
       const { accessToken, userkey } = req.cookies;
-
       const result = await this.refreshService.checkToken(accessToken, userkey);
 
       if (result) {
@@ -21,6 +20,7 @@ class RefreshController {
           sameSite: 'none',
           secure: true,
           httpOnly: true,
+          maxAge: 60 * 60 * 24 * 14 * 1000,
         });
       }
       // console.log(

@@ -10,6 +10,7 @@ class AuthController {
     try {
       const { code } = req.query;
       const { userkey } = req.cookies;
+
       const result = await this.authService.kakaoLogin(code, userkey);
       if (result) {
         res.cookie('accessToken', `${result.accessToken}`, {
@@ -20,6 +21,7 @@ class AuthController {
           sameSite: 'none',
           secure: true,
           httpOnly: true,
+          maxAge: 60 * 60 * 24 * 14 * 1000,
         });
       }
       // console.log(
