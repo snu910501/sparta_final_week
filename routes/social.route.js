@@ -4,7 +4,15 @@ const AuthController = require('../controllers/auth.controller');
 const authController = new AuthController();
 
 router.get('/kakao/callback', authController.kakaoLogin, (req, res) => {
-  res.redirect('/');
+  const { accessToken, userkey } = req.cookies;
+  res.setHeader(
+    'Set-Cookie',
+    `accessToken=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None`,
+  );
+  res.setHeader(
+    'Set-Cookie',
+    `userkey=${userkey}; Path=/; HttpOnly; Secure; SameSite=None`,
+  );
 });
 
 // router.get('/logout', authController.logout);

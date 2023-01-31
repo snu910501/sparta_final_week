@@ -15,11 +15,13 @@ const isLoggedIn = async (req, res, next) => {
       res.cookie('accessToken', '', {
         sameSite: 'none',
         secure: true,
+        httpOnly: true,
         maxAge: 0,
       });
       res.cookie('userkey', '', {
         sameSite: 'none',
         secure: true,
+        httpOnly: true,
         maxAge: 0,
       });
       throw badRequest('비정상 접근');
