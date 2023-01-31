@@ -10,7 +10,7 @@ class AuthController {
     try {
       const { code } = req.query;
       const result = await this.authService.kakaoLogin(code);
-      console.log(result);
+      // console.log(result);
       if (result) {
         // res.cookie('accessToken', `${result.accessToken}`, {
         //   sameSite: 'none',
@@ -26,6 +26,7 @@ class AuthController {
       // console.log(
       //   `auth: accessToken=${result.accessToken}; userkey=${result.userkey}`,
       // );
+      console.log(`userkey=${result.userkey}`);
 
       return res.status(200).json({
         userId: result.userId,
