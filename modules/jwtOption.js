@@ -4,14 +4,14 @@ const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env;
 
 const createAccessToken = async (userId, email) => {
   const accessToken = jwt.sign({ userId, email }, ACCESS_SECRET_KEY, {
-    expiresIn: '5s',
+    expiresIn: '1h',
   });
   return accessToken;
 };
 
 const createRefreshToken = async () => {
   const refreshToken = jwt.sign({}, REFRESH_SECRET_KEY, {
-    expiresIn: '10s',
+    expiresIn: '14d',
   });
   return refreshToken;
 };
