@@ -73,10 +73,12 @@ class AuthService {
 
       const isUser = await this.refreshsRepository.findByUserKey(userkey);
       if (!isUser) throw badRequest('비정상 접근');
-      else await this.refreshsRepository.deleteRefresh(userkey);
 
       refreshToken = await jwtOption.createRefreshToken();
-      await this.refreshsRepository.createRefresh(newUserKey, refreshToken);
+      await this.refreshsRepository.updateRefreshToken(
+        newUserKey,
+        refreshToken,
+      );
 
       return {
         userId,
