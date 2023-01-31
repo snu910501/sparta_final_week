@@ -15,7 +15,6 @@ class AuthController {
         res.cookie('accessToken', `${result.accessToken}`, {
           sameSite: 'none',
           secure: true,
-          httpOnly: true,
         });
         res.cookie('userkey', `${result.userkey}`, {
           sameSite: 'none',
