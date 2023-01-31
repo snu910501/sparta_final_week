@@ -5,16 +5,19 @@ const { unauthorized, badRequest } = require('@hapi/boom');
 
 const isLoggedIn = async (req, res, next) => {
   try {
-    const { accessToken, userkey } = req.cookies;
+    const { userkey } = req.cookies;
+    const { authorization } = req.headers;
+
+    if (!authorization) throw unauthorized('로그인 필요');
+    const [authType, authToken] = authorization.split(' ');
+
+    if (authType !== 'Bearer') throw badRequest('비정상 접근');
+
     // 둘 다 없는 경우 로그인이 되어있지 않음으로 판단
-    if (!accessToken && !userkey) throw unauthorized('로그인 필요');
+    if (!authToken && !userkey) throw unauthorized('로그인 필요');
 
     // 유저키가 없는 경우는 비정상 접근으로 판단
-    if (!userkey && accessToken) {
-      res.cookie('accessToken', '', {
-        sameSite: 'none',
-        secure: true,
-      });
+    if (!userkey && authToken) {
       res.cookie('userkey', '', {
         sameSite: 'none',
         secure: true,
@@ -25,8 +28,7 @@ const isLoggedIn = async (req, res, next) => {
     }
 
     if (userkey) {
-      const accessTokenVerify = jwtOption.accessTokenVerify(accessToken);
-
+      const accessTokenVerify = jwtOption.accessTokenVerify(authToken);
       if (accessTokenVerify.message === 'jwt expired') {
         const result = await refreshcontroller.checkToken(req, res, next);
         if (result) {
