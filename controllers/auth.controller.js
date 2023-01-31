@@ -11,18 +11,18 @@ class AuthController {
       const { code } = req.query;
       const result = await this.authService.kakaoLogin(code);
       // console.log(result);
-      if (result) {
-        // res.cookie('accessToken', `${result.accessToken}`, {
-        //   sameSite: 'none',
-        //   secure: true,
-        //   httpOnly: true,
-        // });
-        res.cookie('userkey', `${result.userkey}`, {
-          sameSite: 'none',
-          secure: true,
-          httpOnly: true,
-        });
-      }
+      // if (result) {
+      //   res.cookie('accessToken', `${result.accessToken}`, {
+      //     sameSite: 'none',
+      //     secure: true,
+      //     httpOnly: true,
+      //   });
+      //   res.cookie('userkey', `${result.userkey}`, {
+      //     sameSite: 'none',
+      //     secure: true,
+      //     httpOnly: true,
+      //   });
+      // }
       // console.log(
       //   `auth: accessToken=${result.accessToken}; userkey=${result.userkey}`,
       // );
@@ -32,6 +32,7 @@ class AuthController {
         userId: result.userId,
         email: result.email,
         accessToken: result.accessToken,
+        userkey: result.userkey,
       });
     } catch (err) {
       next(err);
