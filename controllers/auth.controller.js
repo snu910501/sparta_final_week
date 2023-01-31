@@ -9,6 +9,8 @@ class AuthController {
   kakaoLogin = async (req, res, next) => {
     try {
       const { code } = req.query;
+      const { accessToken, userkey } = req.cookies;
+      console.log(accessToken, userkey);
       const result = await this.authService.kakaoLogin(code);
       // console.log(result);
       if (result) {
@@ -23,9 +25,9 @@ class AuthController {
           httpOnly: true,
         });
       }
-      // console.log(
-      //   `auth: accessToken=${result.accessToken}; userkey=${result.userkey}`,
-      // );
+      console.log(
+        `auth: accessToken=${result.accessToken}; userkey=${result.userkey}`,
+      );
       // console.log(`userkey=${result.userkey}`);
 
       return res.status(200).json({
