@@ -20,30 +20,14 @@ postRouter.post(
   postController.createPost,
 );
 
-//지역 게시글 댓글 순 조회
+//지역 게시글 전체조회 조회
 postRouter.get('', getApiLimiter, postController.getLocationPosts);
-
-//지역 게시글 최신 순 조회
-postRouter.get('/recent', getApiLimiter, postController.getRecentPosts);
 
 //내가 작성한 게시글 조회
 postRouter.get('/me', isLoggedIn, getApiLimiter, postController.getMyPost);
 
-//검색한 게시글 (제목, 내용, 작성자) 조회
-postRouter.get('/search', postController.getSearchedPost);
-
 //특정 게시글 상세 조회
 postRouter.get('/:postid', getApiLimiter, postController.getDetailPost);
-
-//이전 게시글 상세 조회
-postRouter.get(
-  '/:postid/previous',
-  getApiLimiter,
-  postController.getPreviousPost,
-);
-
-//다음 게시글 상세 조회
-postRouter.get('/:postid/next', getApiLimiter, postController.getNextPost);
 
 //수정전 게시글 내용 조회
 postRouter.get(

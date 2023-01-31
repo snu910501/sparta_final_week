@@ -9,7 +9,6 @@ module.exports = class EstateInfo extends Sequelize.Model {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
-
         },
         reviewId: {
           type: Sequelize.INTEGER,
@@ -55,6 +54,7 @@ module.exports = class EstateInfo extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
+
       },
       {
         sequelize,

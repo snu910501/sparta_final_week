@@ -4,7 +4,9 @@ const { postLocation1, postLocation2 } = require('../static/postLocation');
 const postLocationValidation = joi.object().keys({
   postLocation1: joi.string().allow('').not('undefined'),
   postLocation2: joi.string().allow('').not('undefined'),
-  page: joi.number().not('NaN'),
+  page: joi.number().not('NaN').allow(''),
+  type: joi.string().valid('recent', 'trend', ''),
+  search: joi.string().allow('', null),
 });
 
 const createPostValidation = joi.object().keys({
@@ -48,8 +50,6 @@ const updatePostValidation = joi.object().keys({
 
 const userIdValidation = joi.number().required();
 
-const searchedWordValidation = joi.string().allow('');
-
 module.exports = {
   createPostValidation,
   postLocationValidation,
@@ -57,5 +57,4 @@ module.exports = {
   PreviousPostValidation,
   updatePostValidation,
   userIdValidation,
-  searchedWordValidation,
 };

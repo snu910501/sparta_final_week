@@ -1,25 +1,68 @@
-const axios = require('axios');
+//후기 원룸의 좌표값
+const lat = 37.4341;
+const lng = 127.1345;
 
-addressToGet = async () => {
+// 대한민국 남서 북동 좌표
+const koreaNeLat = 38.2501;
+const koreaNeLng = 129.3232;
+const koreaSwLat = 34.3689;
+const koreaSwLng = 126.1412;
 
-  const response = await axios.get('https://dapi.kakao.com/v2/local/search/address.json', {
-    headers: {
-      'Authorization': 'KakaoAK 5ef5bfb475821f7a1a4a6db2f85472c1'
-    },
-    data: new URLSearchParams({
-      'query': '부산시 동래구 '
-    })
-  });
+const zoomLevelThreeLat = 0.0005;
+const zoomLevelThreeLng = 0.0007;
+const zoomLevelFourLat = 0.0040;
+const zoomLevelFourLng = 0.0056;
 
-  console.log({
-    lat: response.data.documents[0].y,
-    lng: response.data.documents[0].x,
-  })
+let zoomLevelThreeSwLng = 0;
+let zoomLevelThreeSwLat = 0;
+let zoomLevelThreeNeLat = 0;
+let zoomLevelThreeNeLng = 0;
 
-  return {
-    lat: response.data.documents[0].y,
-    lng: response.data.documents[0].x,
+let zoomLevelFourSwLng = 0;
+let zoomLevelFourSwLat = 0;
+let zoomLevelFourNeLat = 0;
+let zoomLevelFourNeLng = 0;
+
+// for문을 이진트리로바궈서 속도를 높여보자
+
+console.time()
+
+for (let i = koreaSwLat; i < koreaNeLat; i += zoomLevelThreeLat) {
+  if (lat >= i && lat <= zoomLevelThreeLat + i) {
+    zoomLevelThreeSwLat = i;
+    zoomLevelThreeNeLat = zoomLevelThreeLat + i;
+    break
   }
 }
 
-addressToGet();
+
+for (let i = koreaSwLng; i < koreaNeLng; i += zoomLevelThreeLng) {
+  if (lng >= i && lng <= zoomLevelThreeLng + i) {
+    zoomLevelThreeSwLng = i;
+    zoomLevelThreeNeLng = zoomLevelThreeLng + i;
+    break
+  }
+}
+
+console.timeEnd()
+
+///////////////////////////////////
+
+// console.time()
+
+// const low = koreaSwLat;
+// const high = koreaNeLat;
+// const mid = Math.floor((low + high) / 2)
+
+
+// console.time()
+
+// while (lat >= mid && lat <= mid + zoomLevelThreeLat) {
+//   if (lat < mid) {
+//     high = mid - zoomLevelThreeLat;
+//   } else {
+//     high = mid + zoomLevelFourLat;
+//   }
+// }
+
+// console.timeEnd();

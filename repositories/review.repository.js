@@ -5,6 +5,8 @@ const DistrictDo = require("../models/districtDo");
 const DistrictCity = require('../models/districtCity');
 const DistrictDong = require('../models/districtDong');
 const ReviewImage = require('../models/reviewImage');
+const ZoomLevelFour = require("../models/zoomLevelFour");
+const ZoomLevelThree = require('../models/zoomLevelThree');
 
 const error = require('../modules/error');
 
@@ -28,7 +30,11 @@ class ReviewRepository {
 
   createDo = async (doName, LatLng) => {
     try {
-      console.log('doname', LatLng);
+      if (doName == '서울') {
+        doName = '서울특별시';
+      } else if (doName == '경기') {
+        doName = '경기도';
+      }
       const doExist = await DistrictDo.findOne({
         where: {
           doName: doName
@@ -112,6 +118,19 @@ class ReviewRepository {
         lat: latLng.lat,
         lng: latLng.lng
       });
+
+      await ZoomLevelThree.create({
+        estateId: estate.estateId,
+        lat: latLng.zoomLevelThreeSwLat,
+        lng: latLng.zoomLevelThreeSwLng,
+      })
+
+      await ZoomLevelFour.create({
+        estateId: estate.estateId,
+        lat: latLng.zoomLevelFourSwLat,
+        lng: latLng.zoomLevelFourSwLng,
+      })
+
       return estate;
     } catch (err) {
       console.log('ReviewRepository CreateEstate Error', err);
@@ -141,7 +160,8 @@ class ReviewRepository {
     mold,
     parking,
     safe,
-    imageUrls
+    imageUrls,
+    userId
   ) => {
 
     let review = await Review.create(
@@ -156,6 +176,7 @@ class ReviewRepository {
         deposit,
         monthly_payment,
         acreage,
+        userId,
       }
     );
 
@@ -232,6 +253,7 @@ class ReviewRepository {
           'star',
           'createdAt',
           'estateId',
+          'reviewId'
         ]
       })
 
@@ -245,9 +267,9 @@ class ReviewRepository {
           ]
         })
         review.dataValues.address = address.address_jibun
+        console.log('kaka', review.dataValues)
         return review.dataValues
       }))
-
       return data;
     } catch (err) {
       throw err;

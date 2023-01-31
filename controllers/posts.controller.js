@@ -7,26 +7,14 @@ class PostController {
 
   getLocationPosts = async (req, res, next) => {
     try {
-      const { postLocation1, postLocation2, page } = req.query;
-      const posts = await this.postService.getLocationPosts(
+      const { postLocation1, postLocation2, page, type, search } = req.query;
+      const posts = await this.postService.getLocationPosts({
         postLocation1,
         postLocation2,
         page,
-      );
-      res.status(200).json({ posts });
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  getRecentPosts = async (req, res, next) => {
-    try {
-      const { postLocation1, postLocation2, page } = req.query;
-      const posts = await this.postService.getRecentPosts(
-        postLocation1,
-        postLocation2,
-        page,
-      );
+        type,
+        search,
+      });
       res.status(200).json({ posts });
     } catch (err) {
       next(err);
@@ -80,36 +68,6 @@ class PostController {
       const postId = req.params.postid;
       const post = await this.postService.getWrotePost(postId, userId);
       res.status(200).json({ post });
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  getPreviousPost = async (req, res, next) => {
-    try {
-      const postId = req.params.postid;
-      const post = await this.postService.getPreviousPost(postId);
-      res.status(200).json({ post });
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  getNextPost = async (req, res, next) => {
-    try {
-      const postId = req.params.postid;
-      const post = await this.postService.getNextPost(postId);
-      res.status(200).json({ post });
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  getSearchedPost = async (req, res, next) => {
-    try {
-      const { word } = req.query;
-      const posts = await this.postService.getSearchedPost(word);
-      res.status(200).json({ posts });
     } catch (err) {
       next(err);
     }

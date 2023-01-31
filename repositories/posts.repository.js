@@ -6,53 +6,11 @@ class PostRepository {
     this.postsModel = postsModel;
   }
 
-  getLocationPosts = async (postLocation1, postLocation2, page) => {
-    let whereLocation = {};
-    if (postLocation1) {
-      whereLocation = postLocation2
-        ? { [Op.and]: [{ postLocation1 }, { postLocation2 }] }
-        : { postLocation1 };
-    }
+  getLocationPosts = async (whereLocation, page, order) => {
     const posts = await this.postsModel.findAll({
       subQuery: false,
       where: whereLocation,
-      order: [
-        ['commentsCount', 'DESC'],
-        ['createdAt', 'DESC'],
-      ],
-      attributes: [
-        'postId',
-        'postImage',
-        'title',
-        'content',
-        'postLocation1',
-        'postLocation2',
-        'createdAt',
-        'email',
-        [
-          Sequelize.fn('COUNT', Sequelize.col('Comments.commentId')),
-          'commentsCount',
-        ],
-      ],
-      include: [{ model: Comments, attributes: [] }],
-      group: 'postId',
-      limit: 24,
-      offset: 24 * (page - 1),
-    });
-    return posts;
-  };
-
-  getRecentPosts = async (postLocation1, postLocation2, page) => {
-    let whereLocation = {};
-    if (postLocation1) {
-      whereLocation = postLocation2
-        ? { [Op.and]: [{ postLocation1 }, { postLocation2 }] }
-        : { postLocation1 };
-    }
-    const posts = await this.postsModel.findAll({
-      subQuery: false,
-      where: whereLocation,
-      order: [['createdAt', 'DESC']],
+      order: order,
       attributes: [
         'postId',
         'postImage',
@@ -92,52 +50,20 @@ class PostRepository {
   };
 
   getPreviousPost = async (postId) => {
-    const post = await this.postsModel.findOne({
+    const previoustPost = await this.postsModel.findOne({
       where: { postId: { [Op.lt]: postId } },
       order: [['postId', 'DESC']],
+      attributes: ['postId', 'title'],
     });
-    return post;
+    return previoustPost;
   };
 
   getNextPost = async (postId) => {
-    const post = await this.postsModel.findOne({
+    const nextPost = await this.postsModel.findOne({
       where: { postId: { [Op.gt]: postId } },
+      attributes: ['postId', 'title'],
     });
-    return post;
-  };
-
-  getSearchedPost = async (searchedWord) => {
-    const posts = await this.postsModel.findAll({
-      subQuery: false,
-      where: {
-        [Op.or]: [
-          { content: { [Op.like]: `%${searchedWord}%` } },
-          { title: { [Op.like]: `%${searchedWord}%` } },
-          { email: { [Op.like]: `%${searchedWord}%` } },
-        ],
-      },
-      order: [
-        ['commentsCount', 'DESC'],
-        ['postId', 'DESC'],
-      ],
-      attributes: [
-        'postId',
-        'postImage',
-        'title',
-        'content',
-        'postLocation1',
-        'postLocation2',
-        'createdAt',
-        'email',
-        [
-          Sequelize.fn('COUNT', Sequelize.col('Comments.commentId')),
-          'commentsCount',
-        ],
-      ],
-      include: [{ model: Comments, attributes: [] }],
-      group: 'postId',
-    });
-    return posts;
+    return nextPost;
   };
 
   updatePost = async (postId, postInfo) => {
@@ -152,7 +78,7 @@ class PostRepository {
     const myposts = await this.postsModel.findAll({
       where: { userId },
       order: [['createdAt', 'DESC']],
-      attributes: ['title', 'content', 'createdAt'],
+      attributes: ['postId', 'title', 'content', 'createdAt'],
     });
     return myposts;
   };

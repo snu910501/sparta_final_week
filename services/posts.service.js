@@ -7,10 +7,10 @@ const {
   PreviousPostValidation,
   updatePostValidation,
   userIdValidation,
-  searchedWordValidation,
 } = require('../validations/post.validation');
 const { Posts } = require('../models');
 const s3 = require('../config/aws.post.s3');
+const { Op } = require('sequelize');
 const { badRequest, forbidden } = require('@hapi/boom');
 
 class PostService {
@@ -19,43 +19,46 @@ class PostService {
     this.postS3Repository = new PostS3Repository(s3);
   }
 
-  getLocationPosts = async (postLocation1, postLocation2, page) => {
-    await postLocationValidation.validateAsync({
-      postLocation1,
-      postLocation2,
-      page,
-    });
+  getLocationPosts = async (getPostInfo) => {
+    let pageNum = 1;
+    let order = [
+      ['commentsCount', 'DESC'],
+      ['createdAt', 'DESC'],
+    ];
+
+    const { postLocation1, postLocation2, page, type, search } =
+      await postLocationValidation.validateAsync(getPostInfo);
 
     if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
+
+    const searchObject = {
+      [Op.or]: [
+        { content: { [Op.like]: `%${search}%` } },
+        { title: { [Op.like]: `%${search}%` } },
+        { email: { [Op.like]: `%${search}%` } },
+      ],
+    };
+
+    let whereLocation = {};
+
+    if (postLocation1) {
+      whereLocation = postLocation2
+        ? { [Op.and]: [{ postLocation1 }, { postLocation2 }, searchObject] }
+        : { [Op.and]: [{ postLocation1 }, searchObject] };
+    } else whereLocation = searchObject;
+    if (page) pageNum = page;
+    if (type === 'recent') order = [['createdAt', 'DESC']];
+    if (type === 'trend')
+      order = [
+        ['commentsCount', 'DESC'],
+        ['createdAt', 'DESC'],
+      ];
 
     const posts = await this.postRepository.getLocationPosts(
-      postLocation1,
-      postLocation2,
-      page,
+      whereLocation,
+      pageNum,
+      order,
     );
-
-    if (posts.length === 0) throw badRequest('지역 게시물 없음');
-
-    return posts;
-  };
-
-  getRecentPosts = async (postLocation1, postLocation2, page) => {
-    await postLocationValidation.validateAsync({
-      postLocation1,
-      postLocation2,
-      page,
-    });
-
-    if (!postLocation1 && postLocation2) throw badRequest('지역선택1 없음');
-
-    const posts = await this.postRepository.getRecentPosts(
-      postLocation1,
-      postLocation2,
-      page,
-    );
-
-    if (posts.length === 0) throw badRequest('지역 게시물 없음');
-
     return posts;
   };
 
@@ -73,6 +76,19 @@ class PostService {
 
     if (!post.postId) throw badRequest('존재하지 않는 게시글');
 
+    const previoustPost = await this.postRepository.getPreviousPost(postId);
+    const nextPost = await this.postRepository.getNextPost(postId);
+
+    if (previoustPost) {
+      post.dataValues.previoustPostId = previoustPost.dataValues.postId;
+      post.dataValues.previoustPostTitle = previoustPost.dataValues.title;
+    }
+
+    if (nextPost) {
+      post.dataValues.nextPostId = nextPost.dataValues.postId;
+      post.dataValues.nextPostTitle = nextPost.dataValues.title;
+    }
+
     return post;
   };
 
@@ -84,43 +100,6 @@ class PostService {
     if (userId !== existPost.userId) throw forbidden('사용자정보 불일치');
 
     return existPost;
-  };
-
-  getPreviousPost = async (postId) => {
-    await postIdValidation.validateAsync(postId);
-    const existPost = await this.postRepository.getDetailPost(postId);
-
-    if (!existPost) throw badRequest('존재하지 않는 현재 게시글');
-
-    const post = await this.postRepository.getPreviousPost(postId);
-
-    if (!post) throw badRequest('존재하지 않는 이전 게시글');
-
-    return post;
-  };
-
-  getNextPost = async (postId) => {
-    await postIdValidation.validateAsync(postId);
-    const existPost = await this.postRepository.getDetailPost(postId);
-
-    if (!existPost) throw badRequest('존재하지 않는 현재 게시글');
-
-    const post = await this.postRepository.getNextPost(postId);
-
-    if (!post) throw badRequest('존재하지 않는 다음 게시글');
-
-    return post;
-  };
-
-  getSearchedPost = async (searchedWord) => {
-    console.log(searchedWord);
-    await searchedWordValidation.validateAsync(searchedWord);
-    const posts = await this.postRepository.getSearchedPost(searchedWord);
-
-    if (posts.length === 0)
-      throw badRequest('검색 조건과 일치하는 게시글 없음');
-
-    return posts;
   };
 
   updatePost = async (postInfo) => {
@@ -144,7 +123,7 @@ class PostService {
   deletePost = async (postId, userId) => {
     await PreviousPostValidation.validateAsync({ postId, userId });
 
-    const post = await this.postRepository.getPreviousPost(postId);
+    const post = await this.postRepository.getDetailPost(postId);
 
     if (!post) throw badRequest('존재하지 않는 게시글');
     if (userId !== post.userId) throw forbidden('사용자정보 불일치');
