@@ -15,7 +15,7 @@ class RefreshService {
 
   checkToken = async (accessToken, userkey) => {
     const isUser = await this.refreshRepository.findByUserKey(userkey);
-    if (!isUser) throw unauthorized('로그인 필요');
+    if (!isUser) throw unauthorized('로그인 필요1');
 
     const userInfo = jwtOption.accessTokenDecoded(accessToken);
     const compareId = await this.bcrypt.compare(
@@ -25,7 +25,7 @@ class RefreshService {
     if (!compareId) throw badRequest('토큰 정보가 유효하지 않음');
 
     const refreshVerify = jwtOption.refreshTokenVerify(isUser.refreshToken);
-    if (!refreshVerify) throw unauthorized('로그인 필요');
+    if (!refreshVerify) throw unauthorized('로그인 필요2');
 
     let newAccessToken = '';
     let newRefreshToken = '';
