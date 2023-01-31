@@ -15,15 +15,17 @@ class RefreshController {
         res.cookie('accessToken', `${result.accessToken}`, {
           sameSite: 'none',
           secure: true,
+          httpOnly: true,
         });
         res.cookie('userkey', `${result.userkey}`, {
           sameSite: 'none',
           secure: true,
+          httpOnly: true,
         });
       }
-      console.log(
-        `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
-      );
+      // console.log(
+      //   `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
+      // );
       // console.log(`userkey=${result.userkey}`);
 
       return {
