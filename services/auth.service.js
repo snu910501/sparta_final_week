@@ -13,7 +13,7 @@ class AuthService {
   authRepository = new AuthRepository(Users, Refreshs);
   refreshsRepository = new RefreshsRepository(Users, Refreshs);
 
-  kakaoLogin = async (code, userkey) => {
+  kakaoLogin = async (code) => {
     const config = {
       client_id: process.env.KAKAO_ID,
       grant_type: 'authorization_code',
@@ -54,7 +54,6 @@ class AuthService {
       const { userId, email } = newUser;
       accessToken = await jwtOption.createAccessToken(userId, email);
       newUserKey = await this.bcrypt.hash(toString(userId), SALT);
-
       refreshToken = await jwtOption.createRefreshToken();
       await this.refreshsRepository.createRefresh(newUserKey, refreshToken);
 
@@ -71,14 +70,8 @@ class AuthService {
       accessToken = await jwtOption.createAccessToken(userId, email);
       newUserKey = await this.bcrypt.hash(toString(userId), SALT);
 
-      const isUser = await this.refreshsRepository.findByUserKey(userkey);
-      if (!isUser) throw badRequest('비정상 접근');
-
       refreshToken = await jwtOption.createRefreshToken();
-      await this.refreshsRepository.updateRefreshToken(
-        newUserKey,
-        refreshToken,
-      );
+      await this.refreshsRepository.createRefresh(newUserKey, refreshToken);
 
       return {
         userId,

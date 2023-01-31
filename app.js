@@ -6,12 +6,10 @@ const cors = require('cors');
 const errorHandler = require('./modules/errorHandler');
 const app = express();
 const helmet = require('helmet');
-
 app.set('port', process.env.PORT || '3000');
 
-
-const { sequelize } = require("./models");
-const indexRouter = require("./routes");
+const { sequelize } = require('./models');
+const indexRouter = require('./routes');
 
 const corsOption = {
   origin: '*',
@@ -28,8 +26,7 @@ sequelize
     console.log(err);
   });
 
-
-app.use(helmet())
+app.use(helmet());
 app.use(cors(corsOption));
 app.use(morgan('dev'));
 app.use(express.json());
