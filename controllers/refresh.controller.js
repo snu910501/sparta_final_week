@@ -8,28 +8,35 @@ class RefreshController {
 
   checkToken = async (req, res, next) => {
     try {
-      const { accessToken, userkey } = req.cookies;
-      const result = await this.refreshService.checkToken(accessToken, userkey);
+      const { userkey } = req.cookies;
+      const { authorization } = req.headers;
+      if (!authorization) throw unauthorized('로그인 필요');
+
+      const [authType, authToken] = authorization.split(' ');
+      if (authType !== 'Bearer') throw badRequest('잘못된 요청');
+
+      const result = await this.refreshService.checkToken(authToken, userkey);
 
       if (result) {
-        res.cookie('accessToken', `${result.accessToken}`, {
-          sameSite: 'none',
-          secure: true,
-        });
+        // res.cookie('accessToken', `${result.accessToken}`, {
+        //   sameSite: 'none',
+        //   secure: true,
+        // });
         res.cookie('userkey', `${result.userkey}`, {
           sameSite: 'none',
           secure: true,
           httpOnly: true,
         });
       }
-      console.log(
-        `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
-      );
+      // console.log(
+      //   `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
+      // );
       // console.log(`userkey=${result.userkey}`);
 
       return {
         userId: result.userId,
         email: result.email,
+        accessToken: result.accessToken,
       };
     } catch (err) {
       next(err);
