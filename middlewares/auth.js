@@ -11,8 +11,16 @@ const isLoggedIn = async (req, res, next) => {
 
     // 유저키가 없는 경우는 비정상 접근으로 판단
     if (!userkey && accessToken) {
-      res.clearCookie('accessToken');
-      res.clearCookie('userkey');
+      res.cookie('accessToken', '', {
+        sameSite: 'none',
+        secure: true,
+      });
+      res.cookie('userkey', '', {
+        sameSite: 'none',
+        secure: true,
+        httpOnly: true,
+        maxAge: 0,
+      });
       throw badRequest('비정상 접근');
     }
 

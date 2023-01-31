@@ -20,7 +20,6 @@ class RefreshController {
           sameSite: 'none',
           secure: true,
           httpOnly: true,
-          maxAge: 60 * 60 * 24 * 14 * 1000,
         });
       }
       // console.log(

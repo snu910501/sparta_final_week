@@ -27,8 +27,6 @@ class RefreshService {
     const refreshVerify = jwtOption.refreshTokenVerify(isUser.refreshToken);
     if (!refreshVerify) throw unauthorized('로그인 필요');
 
-    // UNIX 타임으로 DATE객체 생성해서 남은 시간 체크
-    const timeRemain = refreshVerify.exp * 1000 - Number(new Date());
     let newAccessToken = '';
     let newRefreshToken = '';
     let newUserKey = '';
