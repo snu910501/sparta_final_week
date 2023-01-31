@@ -15,8 +15,7 @@ const isLoggedIn = async (req, res, next) => {
     if (!userkey && accessToken) {
       res.cookie('accessToken', '', {
         sameSite: 'none',
-        secure: false,
-        httpOnly: true,
+        secure: true,
         maxAge: 0,
       });
       res.cookie('userkey', '', {
