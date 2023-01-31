@@ -9,20 +9,16 @@ class AuthController {
   kakaoLogin = async (req, res, next) => {
     try {
       const { code } = req.query;
-      const { accessToken, userkey } = req.cookies;
-      console.log(accessToken, userkey);
       const result = await this.authService.kakaoLogin(code);
-      // console.log(result);
+
       if (result) {
         res.cookie('accessToken', `${result.accessToken}`, {
           sameSite: 'none',
           secure: true,
-          httpOnly: true,
         });
         res.cookie('userkey', `${result.userkey}`, {
           sameSite: 'none',
           secure: true,
-          httpOnly: true,
         });
       }
       console.log(

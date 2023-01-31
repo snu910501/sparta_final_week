@@ -9,26 +9,21 @@ class RefreshController {
   checkToken = async (req, res, next) => {
     try {
       const { accessToken, userkey } = req.cookies;
-
-      console.log(accessToken, userkey);
-
       const result = await this.refreshService.checkToken(accessToken, userkey);
 
       if (result) {
         res.cookie('accessToken', `${result.accessToken}`, {
           sameSite: 'none',
           secure: true,
-          httpOnly: true,
         });
         res.cookie('userkey', `${result.userkey}`, {
           sameSite: 'none',
           secure: true,
-          httpOnly: true,
         });
       }
-      // console.log(
-      //   `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
-      // );
+      console.log(
+        `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
+      );
       // console.log(`userkey=${result.userkey}`);
 
       return {
