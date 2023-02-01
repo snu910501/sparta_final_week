@@ -23,16 +23,15 @@ class RefreshController {
           httpOnly: true,
         });
       }
-      console.log(
-        `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
-      );
+      // console.log(
+      //   `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
+      // );
       // console.log(`userkey=${result.userkey}`);
 
       return {
         userId: result.userId,
         email: result.email,
         accessToken: result.accessToken,
-        userkey: result.userkey,
       };
     } catch (err) {
       next(err);
