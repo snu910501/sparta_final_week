@@ -99,7 +99,7 @@ class ReviewController {
   deleteReview = async (req, res) => {
     try {
 
-      const reviewId = res.params.reviewId;
+      const reviewId = req.params.reviewId;
       const userId = res.locals.userId;
       const result = await this.reviewService.deleteReview(reviewId, userId);
       return res.status(200).json(result);
