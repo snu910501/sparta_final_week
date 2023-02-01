@@ -275,6 +275,20 @@ class ReviewRepository {
       throw err;
     }
   }
+
+  findReview = async (reviewId) => {
+    try {
+      let review = await Review.findOne({
+        where: {
+          reviewId: reviewId
+        }
+      })
+
+      return review;
+    } catch (err) {
+
+    }
+  }
 }
 
 module.exports = ReviewRepository;
