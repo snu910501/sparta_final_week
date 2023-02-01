@@ -13,6 +13,7 @@ router.get('/kakao/callback', authController.kakaoLogin, (req, res) => {
     'Set-Cookie',
     `userkey=${userkey}; Path=/; HttpOnly; Secure; SameSite=None`,
   );
+  res.redirect('/');
 });
 
 // router.get('/logout', authController.logout);
