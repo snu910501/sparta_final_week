@@ -16,6 +16,6 @@ router.get('/kakao/callback', authController.kakaoLogin, (req, res) => {
   res.redirect('/');
 });
 
-// router.get('/logout', authController.logout);
+router.post('/logout', authController.logout);
 
 module.exports = router;
