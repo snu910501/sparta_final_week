@@ -286,7 +286,19 @@ class ReviewRepository {
 
       return review;
     } catch (err) {
+      throw err
+    }
+  }
 
+  deleteReview = async (reviewId) => {
+    try {
+      await Review.destroy({
+        where: {
+          reviewId: reviewId
+        }
+      })
+    } catch (err) {
+      throw err
     }
   }
 }
