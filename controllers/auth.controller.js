@@ -46,7 +46,6 @@ class AuthController {
       if (result.msg === '로그아웃 성공') {
         res.clearCookie('accessToken');
         res.clearCookie('userkey');
-        res.clearCookie('token');
       }
       return res.status(200).json({ msg: '로그아웃 성공' });
     } catch (err) {
