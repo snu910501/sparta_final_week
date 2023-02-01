@@ -1,6 +1,7 @@
 const jwtOption = require('../modules/jwtOption');
 const bcrypt = require('bcryptjs');
 const AuthService = require('../services/auth.service');
+const { unauthorized, badRequest } = require('@hapi/boom');
 class AuthController {
   constructor() {
     this.authService = new AuthService(bcrypt);
@@ -23,9 +24,9 @@ class AuthController {
           httpOnly: true,
         });
       }
-      // console.log(
-      //   `auth: accessToken=${result.accessToken}; userkey=${result.userkey}`,
-      // );
+      console.log(
+        `auth: accessToken=${result.accessToken}; userkey=${result.userkey}`,
+      );
       // console.log(`userkey=${result.userkey}`);
 
       return res.status(200).json({
@@ -34,7 +35,21 @@ class AuthController {
         accessToken: result.accessToken,
       });
     } catch (err) {
-      next(err);
+      next(unauthorized('로그인 실패'));
+    }
+  };
+
+  logout = async (req, res, next) => {
+    try {
+      const { userkey } = req.cookies;
+      const result = await this.authService.logout(userkey);
+      if (result.msg === '로그아웃 성공') {
+        res.clearCookie('accessToken');
+        res.clearCookie('userkey');
+        res.clearCookie('token');
+      }
+    } catch (err) {
+      next(badRequest('로그아웃 실패'));
     }
   };
 }

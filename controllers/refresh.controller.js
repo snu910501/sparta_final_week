@@ -23,9 +23,9 @@ class RefreshController {
           httpOnly: true,
         });
       }
-      // console.log(
-      //   `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
-      // );
+      console.log(
+        `refresh: accessToken=${result.accessToken}; userkey=${result.userkey}`,
+      );
       // console.log(`userkey=${result.userkey}`);
 
       return {
