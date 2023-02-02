@@ -15,7 +15,7 @@ class PostController {
         type,
         search,
       });
-      res.status(200).json({ posts });
+      res.status(200).json(posts);
     } catch (err) {
       next(err);
     }
