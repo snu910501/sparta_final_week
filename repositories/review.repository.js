@@ -297,6 +297,17 @@ class ReviewRepository {
           reviewId: reviewId
         }
       })
+      await Estate.destroy({
+        where: {
+          reviewId: reviewId
+        }
+      })
+
+      await EstateInfo.destroy({
+        where: {
+          reviewId: reviewId
+        }
+      })
     } catch (err) {
       throw err
     }
