@@ -48,8 +48,9 @@ class AuthController {
         res.clearCookie('userkey');
         res.clearCookie('token');
       }
+      return res.status(200).json({ msg: '로그아웃 성공' });
     } catch (err) {
-      next(badRequest('로그아웃 실패'));
+      return res.status(400).json({ errorMsg: '로그아웃 실패' });
     }
   };
 }
