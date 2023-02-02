@@ -26,6 +26,14 @@ module.exports = class Estate extends Sequelize.Model {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        dabang_url: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        zigbang_url: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        }
       },
       {
         sequelize,
