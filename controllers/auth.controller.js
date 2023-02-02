@@ -24,9 +24,9 @@ class AuthController {
           httpOnly: true,
         });
       }
-      console.log(
-        `auth: accessToken=${result.accessToken}; userkey=${result.userkey}`,
-      );
+      // console.log(
+      //   `auth: accessToken=${result.accessToken}; userkey=${result.userkey}`,
+      // );
       // console.log(`userkey=${result.userkey}`);
 
       return res.status(200).json({
