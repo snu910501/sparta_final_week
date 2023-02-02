@@ -292,6 +292,11 @@ class ReviewRepository {
 
   deleteReview = async (reviewId) => {
     try {
+      const review = await Review.findOne({
+        where: {
+          reviewId: reviewId
+        }
+      })
       await Review.destroy({
         where: {
           reviewId: reviewId
@@ -299,7 +304,7 @@ class ReviewRepository {
       })
       await Estate.destroy({
         where: {
-          reviewId: reviewId
+          estateId: review.estateId
         }
       })
 
