@@ -313,6 +313,22 @@ class ReviewRepository {
           reviewId: reviewId
         }
       })
+
+      await ReviewImage.destroy({
+        where: {
+          reviewId: reviewId
+        }
+      });
+      await ZoomLevelFour.destroy({
+        where: {
+          estateId: review.estateId
+        }
+      });
+      await ZoomLevelThree.destroy({
+        where: {
+          estateId: review.estateId
+        }
+      })
     } catch (err) {
       throw err
     }
