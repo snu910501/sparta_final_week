@@ -12,7 +12,7 @@ const { sequelize } = require('./models');
 const indexRouter = require('./routes');
 
 const corsOption = {
-  origin: ['http://localhost:3000'],
+  origin: ['https://www.ezip.store', 'http://localhost:3000'],
   credentials: true,
   optionsSuccessStatus: 200,
 };
