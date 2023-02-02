@@ -25,6 +25,7 @@ class PostService {
       ['commentsCount', 'DESC'],
       ['createdAt', 'DESC'],
     ];
+    let isLast = false;
 
     const { postLocation1, postLocation2, page, type, search } =
       await postLocationValidation.validateAsync(getPostInfo);
@@ -59,7 +60,18 @@ class PostService {
       pageNum,
       order,
     );
-    return posts;
+    if (posts.length === 0) throw badRequest('게시글이 더 이상 없음');
+    if (posts) pageNum = page + 1;
+
+    const nextposts = await this.postRepository.getLocationPosts(
+      whereLocation,
+      pageNum,
+      order,
+    );
+
+    if (nextposts.length === 0) isLast = true;
+
+    return { isLast, posts };
   };
 
   createPost = async (postInput) => {
