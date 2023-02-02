@@ -7,14 +7,14 @@ module.exports = reviewValidate = async (address, address_jibun, residence_type,
   let checkNum = /[0-9]/;
   let checkString = /^[a-zA-Zㄱ-힣0-9-_. ]{1,500}$/
   // -_.!?
-  if (!checkString.test(good)) {
-    const error = new Error(405, "good 형식이 일치하지 않습니다.")
-    throw error
-  };
-  if (!checkString.test(bad)) {
-    const error = new Error(405, "bad 형식이 일치하지 않습니다.")
-    throw error
-  };
+  // if (!checkString.test(good)) {
+  //   const error = new Error(405, "good 형식이 일치하지 않습니다.")
+  //   throw error
+  // };
+  // if (!checkString.test(bad)) {
+  //   const error = new Error(405, "bad 형식이 일치하지 않습니다.")
+  //   throw error
+  // };
   if (!checkNum.test(checkNum) || star > 5 || star < 1) {
     const error = new Error(405, "stars 형식이 일치하지 않습니다.")
     throw error

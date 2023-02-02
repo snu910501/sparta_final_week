@@ -82,6 +82,7 @@ class ReviewController {
   myReview = async (req, res) => {
     try {
       const userId = res.locals.userId
+      console.log('hi hi', userId);
       const reviews = await this.reviewService.myReview(userId);
 
       return res.status(200).json({ data: reviews })
@@ -97,8 +98,8 @@ class ReviewController {
 
   deleteReview = async (req, res) => {
     try {
-      
-      const reviewId = res.params.reviewId;
+
+      const reviewId = req.params.reviewId;
       const userId = res.locals.userId;
       const result = await this.reviewService.deleteReview(reviewId, userId);
       return res.status(200).json(result);
