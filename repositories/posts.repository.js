@@ -27,8 +27,8 @@ class PostRepository {
       ],
       include: [{ model: Comments, attributes: [] }],
       group: 'postId',
-      limit: 24,
-      offset: 24 * (page - 1),
+      limit: 12,
+      offset: 12 * (page - 1),
     });
     return posts;
   };
