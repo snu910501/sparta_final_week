@@ -60,7 +60,7 @@ class PostService {
       pageNum,
       order,
     );
-    if (posts.length === 0) throw badRequest('게시글이 더 이상 없음');
+
     if (posts) pageNum = page + 1;
 
     const nextposts = await this.postRepository.getLocationPosts(
