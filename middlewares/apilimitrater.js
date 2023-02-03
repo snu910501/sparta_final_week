@@ -10,7 +10,7 @@ exports.postCUDApiLimiter = rateLimite({
 
 exports.getApiLimiter = rateLimite({
   windowMs: 1 * 1000,
-  max: 5,
+  max: 10,
   handler(req, res, next, option) {
     res.status(option.statusCode).json({ errorMsg: '조회 요청 많음' });
   },
