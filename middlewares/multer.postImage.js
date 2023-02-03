@@ -21,8 +21,8 @@ const multerPostImage = multer({
       callback(null, `final-project/${nanoid()}.${imageType}`);
     },
   }),
-  // 파일 최대크기 10MB, 파일 전송 개수제한 1개, 데이터전송시 파일을 제외한 필드 개수 9개
-  limits: { fileSize: 10 * 1024 * 1024, files: 1, fields: 9 },
+  // 파일 최대크기 100MB, 파일 전송 개수제한 1개, 데이터전송시 파일을 제외한 필드 개수 9개
+  limits: { fileSize: 100 * 1024 * 1024, files: 1, fields: 9 },
   fileFilter: fileFilter,
 });
 
