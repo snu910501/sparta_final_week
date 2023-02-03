@@ -10,7 +10,7 @@ const postLocationValidation = joi.object().keys({
 });
 
 const createPostValidation = joi.object().keys({
-  title: joi.string().trim().required().min(1).max(50).not(''),
+  title: joi.string().trim().required().min(1).max(100).not(''),
   content: joi.string().trim().required().min(1).max(10000).not(''),
   postLocation1: joi
     .string()
@@ -34,7 +34,7 @@ const PreviousPostValidation = joi.object().keys({
 
 const updatePostValidation = joi.object().keys({
   postId: joi.number().required(),
-  title: joi.string().trim().required().min(1).max(50).not(''),
+  title: joi.string().trim().required().min(1).max(100).not(''),
   content: joi.string().trim().required().min(1).max(10000).not(''),
   postLocation1: joi
     .string()

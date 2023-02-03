@@ -292,9 +292,41 @@ class ReviewRepository {
 
   deleteReview = async (reviewId) => {
     try {
+      const review = await Review.findOne({
+        where: {
+          reviewId: reviewId
+        }
+      })
       await Review.destroy({
         where: {
           reviewId: reviewId
+        }
+      })
+      await Estate.destroy({
+        where: {
+          estateId: review.estateId
+        }
+      })
+
+      await EstateInfo.destroy({
+        where: {
+          reviewId: reviewId
+        }
+      })
+
+      await ReviewImage.destroy({
+        where: {
+          reviewId: reviewId
+        }
+      });
+      await ZoomLevelFour.destroy({
+        where: {
+          estateId: review.estateId
+        }
+      });
+      await ZoomLevelThree.destroy({
+        where: {
+          estateId: review.estateId
         }
       })
     } catch (err) {
