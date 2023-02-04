@@ -23,8 +23,8 @@ module.exports = clustering = async (address) => {
 
   const zoomLevelThreeLat = 0.0005;
   const zoomLevelThreeLng = 0.0007;
-  const zoomLevelFourLat = 0.0040;
-  const zoomLevelFourLng = 0.0056;
+  const zoomLevelFourLat = 0.0020;
+  const zoomLevelFourLng = 0.0028;
 
   let zoomLevelThreeSwLng = 0;
   let zoomLevelThreeSwLat = 0;

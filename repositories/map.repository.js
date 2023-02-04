@@ -14,7 +14,8 @@ class MapRepository {
           "review",
           "doName",
           "lat",
-          "lng"
+          "lng",
+          "review"
         ]
       });
       return reviews;
@@ -31,7 +32,8 @@ class MapRepository {
           "review",
           "cityName",
           "lat",
-          "lng"
+          "lng",
+          "review"
         ]
       });
       return reviews;
@@ -47,7 +49,8 @@ class MapRepository {
           "review",
           "dongName",
           "lat",
-          "lng"
+          "lng",
+          "review"
         ]
       });
       return reviews;
