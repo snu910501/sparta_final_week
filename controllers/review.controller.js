@@ -70,7 +70,23 @@ class ReviewController {
       const reviews = await this.reviewService.getReview(estateId);
       return res.status(200).json({ data: reviews })
     } catch (err) {
-      console.log('CreateController error');
+      console.log('CreateController get Reivew error', err);
+      if (err.status) {
+        return res.status(err.status).json({ errorMessage: err.errorMessage });
+      } else {
+        return res.status(500).json({ errorMessage: 'error' });
+      }
+    }
+  }
+
+  getReviews = async (req, res) => {
+    try {
+      const estateId = req.params.estateId;
+
+      const reviews = await this.reviewService.getReviews(estateId);
+      return res.status(200).json({ data: reviews })
+    } catch (err) {
+      console.log('CreateController getReviews error', err);
       if (err.status) {
         return res.status(err.status).json({ errorMessage: err.errorMessage });
       } else {

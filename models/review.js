@@ -18,10 +18,7 @@ module.exports = class Review extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        // nickname: {
-        //   type: Sequelize.STRING,
-        //   allowNull: false,
-        // },
+
         good: {
           type: Sequelize.STRING,
           allowNull: false,

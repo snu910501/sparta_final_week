@@ -243,6 +243,27 @@ class ReviewRepository {
     }
   }
 
+  getReviews = async (estateId) => {
+    try {
+      const estates = await Estate.findOne({
+        where: {
+          estateId: estateId
+        }
+      });
+
+      const reviews = await Review.findOne({
+        where: {
+          reviewId: estates.reviewId
+        },
+        attributes: ['star']
+      });
+
+      return { estates, reviews }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   myReview = async (userId) => {
     try {
       const reviews = await Review.findAll({

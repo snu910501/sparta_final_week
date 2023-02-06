@@ -206,6 +206,15 @@ class ReviewService {
 
     estateInfoArr = estateInfoArr[0]
     return { reviewArr, estateInfoArr, estate }
+  };
+
+  getReviews = async (estateId) => {
+    try {
+      const estates = await this.reviewRepository.getReviews(estateId);
+      return estates;
+    } catch (err) {
+      throw err;
+    }
   }
 
   myReview = async (userId) => {
@@ -217,14 +226,14 @@ class ReviewService {
     }
   }
 
-  deleteReview = async(reviewId, userId) => {
-    try{
-      const review =  await this.reviewRepository.findReview(reviewId);
+  deleteReview = async (reviewId, userId) => {
+    try {
+      const review = await this.reviewRepository.findReview(reviewId);
 
-      if(review) {
-        if(review.userId == userId ) {
+      if (review) {
+        if (review.userId == userId) {
           await this.reviewRepository.deleteReview(reviewId);
-          return {message : '삭제 성공'};
+          return { message: '삭제 성공' };
         } else {
           const error = new Error('405', '자신의 후기만 삭제가 가능합니다.')
           throw error;
@@ -233,7 +242,7 @@ class ReviewService {
         const error = new Error('405', '후기가 존재하지 않습니다.')
         throw error;
       }
-    } catch(err) {
+    } catch (err) {
       throw err;
     }
   }
