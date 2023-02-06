@@ -257,7 +257,7 @@ class ReviewRepository {
           where: {
             reviewId: estates.reviewId
           },
-          attributes: ['star']
+          attributes: ['star', 'deposit', 'monthly_payment', 'residence_type', 'transaction_type']
         });
 
         arr.push({ estates, star })
