@@ -243,22 +243,27 @@ class ReviewRepository {
     }
   }
 
-  getReviews = async (estateId) => {
+  getReviews = async (estateIds) => {
     try {
-      const estates = await Estate.findOne({
-        where: {
-          estateId: estateId
-        }
-      });
+      const arr = []
+      for (let i = 0; i < estateIds.length; i++) {
+        const estates = await Estate.findOne({
+          where: {
+            estateId: estateIds[i]
+          }
+        });
 
-      const reviews = await Review.findOne({
-        where: {
-          reviewId: estates.reviewId
-        },
-        attributes: ['star']
-      });
+        const star = await Review.findOne({
+          where: {
+            reviewId: estates.reviewId
+          },
+          attributes: ['star']
+        });
 
-      return { estates, reviews }
+        arr.push({ estates, star })
+      }
+
+      return arr
     } catch (err) {
       throw err;
     }

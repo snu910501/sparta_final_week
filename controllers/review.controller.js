@@ -81,9 +81,9 @@ class ReviewController {
 
   getReviews = async (req, res) => {
     try {
-      const estateId = req.params.estateId;
+      const estateIds = req.body.estateIds;
 
-      const reviews = await this.reviewService.getReviews(estateId);
+      const reviews = await this.reviewService.getReviews(estateIds);
       return res.status(200).json({ data: reviews })
     } catch (err) {
       console.log('CreateController getReviews error', err);

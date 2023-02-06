@@ -208,9 +208,9 @@ class ReviewService {
     return { reviewArr, estateInfoArr, estate }
   };
 
-  getReviews = async (estateId) => {
+  getReviews = async (estateIds) => {
     try {
-      const estates = await this.reviewRepository.getReviews(estateId);
+      const estates = await this.reviewRepository.getReviews(estateIds);
       return estates;
     } catch (err) {
       throw err;
