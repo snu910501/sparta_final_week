@@ -246,6 +246,7 @@ class ReviewRepository {
   getReviews = async (estateIds) => {
     try {
       const arr = []
+
       for (let i = 0; i < estateIds.length; i++) {
         const estates = await Estate.findOne({
           where: {
@@ -253,14 +254,14 @@ class ReviewRepository {
           }
         });
 
-        const star = await Review.findOne({
+        const review = await Review.findOne({
           where: {
-            reviewId: estates.reviewId
+            estateId: estates.estateId
           },
           attributes: ['star', 'deposit', 'monthly_payment', 'residence_type', 'transaction_type']
         });
 
-        arr.push({ estates, star })
+        arr.push({ estates, review })
       }
 
       return arr
